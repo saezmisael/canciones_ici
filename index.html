@@ -4,32 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alabanzas - Iglesia de Cristo</title>
-    <!-- Usamos Tailwind CSS para un diseño moderno y responsivo -->
+    
+    <!-- Configuración de Tailwind y Modo Oscuro -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class', // Habilita el modo oscuro manual por clase
+        }
+        
+        // Verifica la preferencia de color antes de cargar para evitar parpadeos
+        if (localStorage.getItem('theme') === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+
     <!-- Iconos de FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Fuente cursiva oficial de Google Fonts para el logo -->
-    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <!-- Fuentes de Google Fonts (Montserrat para el cuerpo, Dancing Script para el logo) -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
     <style>
-        /* Estilos personalizados para la barra de desplazamiento y transiciones */
+        /* Estilos personalizados para a barra de rolagem e transições */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f9fafb; /* Fondo principal gris muy claro/blanco */
-            color: #000000; /* Texto principal negro */
+            font-family: 'Montserrat', sans-serif;
         }
         ::-webkit-scrollbar {
             width: 8px;
         }
-        ::-webkit-scrollbar-track {
-            background: #f3f4f6; /* Gris muy claro */
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #ef4444; /* Rojo */
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #dc2626; /* Rojo más oscuro */
-        }
+        /* Scrollbar Modo Claro */
+        ::-webkit-scrollbar-track { background: #f3f4f6; }
+        ::-webkit-scrollbar-thumb { background: #ef4444; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #dc2626; }
+        
+        /* Scrollbar Modo Oscuro */
+        html.dark ::-webkit-scrollbar-track { background: #1f2937; }
+        html.dark ::-webkit-scrollbar-thumb { background: #ef4444; }
+        html.dark ::-webkit-scrollbar-thumb:hover { background: #b91c1c; }
+
         .modal-enter {
             animation: fadeIn 0.3s ease-out forwards;
         }
@@ -40,68 +52,116 @@
         /* Preservar los saltos de línea en las letras de las canciones */
         .letra-cancion {
             white-space: pre-wrap;
-            line-height: 1.8;
+            line-height: 1.6;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col relative bg-gray-50 text-black">
+<body class="min-h-screen flex flex-col relative bg-gray-50 dark:bg-gray-900 text-black dark:text-gray-100 transition-colors duration-300">
 
-    <!-- Navegación y Menú -->
-    <nav class="bg-white shadow-lg sticky top-0 z-10 border-b-4 border-red-600">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
-            <div class="flex flex-wrap md:flex-nowrap justify-between items-center gap-y-4 gap-x-2">
-                
-                <!-- Logo de la Iglesia adaptado y con cuadro rojo (Se adapta en móviles) -->
-                <div class="flex-shrink-0 flex items-center cursor-pointer border-2 border-red-600 p-1.5 md:p-2 rounded-lg bg-white order-1" onclick="renderSongs()">
-                    <!-- Icono del faro dibujado a mano -->
-                    <div class="mr-2">
-                        <svg class="w-9 h-12 md:w-12 md:h-16" viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg">
-                            <rect x="48" y="10" width="4" height="30" fill="black"/>
-                            <!-- Banderas rojas -->
-                            <path d="M50 15 Q70 10 65 25 Q55 20 50 25 Z" fill="#dc2626"/>
-                            <path d="M50 35 Q70 30 65 45 Q55 40 50 45 Z" fill="#dc2626"/>
-                            <!-- Techo/Linterna -->
-                            <path d="M30 45 C40 45, 45 40, 50 35 C55 40, 60 45, 70 45 L65 50 L35 50 Z" fill="black"/>
-                            <path d="M15 55 Q50 65 85 55 L85 60 L15 60 Z" fill="black"/>
-                            <rect x="35" y="60" width="30" height="15" fill="black"/>
-                            <rect x="25" y="75" width="50" height="10" fill="black"/>
-                            <!-- Base curva -->
-                            <path d="M30 85 C30 85, 20 135, 20 145 C20 150, 80 150, 80 145 C80 135, 70 85, 70 85 Z" fill="black"/>
-                            <!-- Franjas blancas -->
-                            <path d="M26 100 Q50 110 74 100 L76 110 Q50 120 24 110 Z" fill="white"/>
-                            <path d="M22 122 Q50 132 78 122 L79 130 Q50 140 21 130 Z" fill="white"/>
-                        </svg>
+    <!-- ENCABEZADO FIJO (Sticky): Logo, Título y Buscador siempre visibles al hacer scroll -->
+    <header class="sticky top-0 z-20 shadow-md bg-white dark:bg-gray-900 transition-colors duration-300">
+        
+        <!-- PARTE SUPERIOR: Logo y Botón Oscuro -->
+        <nav class="border-b-[3px] border-red-600">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 md:py-4">
+                <div class="flex justify-center md:justify-between items-center relative w-full">
+                    
+                    <!-- Logo Pequeño (Centrado en Móvil, Izquierda en PC) -->
+                    <div class="flex items-center cursor-pointer border-[1.5px] border-red-600 px-3 py-1.5 md:px-4 md:py-2 rounded-xl bg-white dark:bg-gray-800 shadow-sm hover:shadow-md hover:bg-gray-50 dark:hover:bg-gray-700 transition-all duration-300 relative z-10" onclick="renderSongs()">
+                        <!-- Icono del faro -->
+                        <div class="mr-2 md:mr-3 text-black dark:text-white transition-colors duration-300 flex-shrink-0">
+                            <svg class="w-6 h-10 md:w-8 md:h-12" viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="48" y="10" width="4" height="30" class="fill-current"/>
+                                <!-- Banderas rojas -->
+                                <path d="M50 15 Q70 10 65 25 Q55 20 50 25 Z" fill="#dc2626"/>
+                                <path d="M50 35 Q70 30 65 45 Q55 40 50 45 Z" fill="#dc2626"/>
+                                <!-- Techo/Linterna -->
+                                <path d="M30 45 C40 45, 45 40, 50 35 C55 40, 60 45, 70 45 L65 50 L35 50 Z" class="fill-current"/>
+                                <path d="M15 55 Q50 65 85 55 L85 60 L15 60 Z" class="fill-current"/>
+                                <rect x="35" y="60" width="30" height="15" class="fill-current"/>
+                                <rect x="25" y="75" width="50" height="10" class="fill-current"/>
+                                <!-- Base curva -->
+                                <path d="M30 85 C30 85, 20 135, 20 145 C20 150, 80 150, 80 145 C80 135, 70 85, 70 85 Z" class="fill-current"/>
+                                <!-- Franjas blancas -->
+                                <path d="M26 100 Q50 110 74 100 L76 110 Q50 120 24 110 Z" class="fill-white dark:fill-gray-800 transition-colors duration-300"/>
+                                <path d="M22 122 Q50 132 78 122 L79 130 Q50 140 21 130 Z" class="fill-white dark:fill-gray-800 transition-colors duration-300"/>
+                            </svg>
+                        </div>
+                        <!-- Texto del logo -->
+                        <div class="flex flex-col justify-center">
+                            <span class="text-red-600 dark:text-red-500 text-xl md:text-2xl leading-none" style="font-family: 'Dancing Script', cursive; margin-bottom: -2px;">Iglesia de</span>
+                            <span class="text-black dark:text-white text-2xl md:text-3xl leading-none transition-colors duration-300" style="font-family: 'Dancing Script', cursive;">Cristo</span>
+                            <div class="h-px bg-gray-300 dark:bg-gray-600 my-0.5 w-full transition-colors duration-300"></div>
+                            <span class="text-black dark:text-gray-300 text-[0.45rem] md:text-[0.55rem] tracking-[0.2em] font-sans font-bold uppercase text-center transition-colors duration-300">
+                                Internacional
+                            </span>
+                        </div>
                     </div>
-                    <!-- Texto del logo -->
-                    <div class="flex flex-col justify-center mt-1">
-                        <span class="text-red-600 text-2xl md:text-4xl leading-none" style="font-family: 'Dancing Script', cursive; margin-bottom: -6px; padding-left: 5px;">Iglesia de</span>
-                        <span class="text-black text-3xl md:text-5xl leading-none" style="font-family: 'Dancing Script', cursive;">Cristo</span>
-                        <span class="text-black text-[0.5rem] md:text-[0.65rem] tracking-[0.2em] font-sans font-bold uppercase text-center border-t border-gray-300 pt-0.5 mt-1">
-                            Internacional
-                        </span>
+
+                    <!-- Título Tipográfico (PC: Centrado Absoluto, Oculto en Móvil) -->
+                    <div class="hidden md:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex-col items-center justify-center pointer-events-none z-0">
+                        <div class="text-2xl uppercase leading-tight text-gray-900 dark:text-white tracking-wider" style="font-family: 'Lequire Rounded', 'Montserrat', sans-serif; font-weight: 800;">
+                            Cancionero de
+                        </div>
+                        <div class="text-4xl lg:text-5xl uppercase leading-none text-red-600 mb-1 tracking-wide" style="font-family: 'Brioche', 'Montserrat', sans-serif; font-weight: 600;">
+                            Alabanzas
+                        </div>
+                        <div class="flex items-center justify-center gap-2 mt-1 w-full">
+                            <div class="h-[1.5px] bg-gradient-to-r from-transparent via-red-300 to-red-600 dark:via-red-800 dark:to-red-600 w-16"></div>
+                            <i class="fa-solid fa-cross text-red-600 text-xs"></i>
+                            <div class="h-[1.5px] bg-gradient-to-l from-transparent via-red-300 to-red-600 dark:via-red-800 dark:to-red-600 w-16"></div>
+                        </div>
+                    </div>
+
+                    <!-- Botón Modo Oscuro (Absoluto derecha en Móvil, Estático derecha en PC) -->
+                    <button onclick="toggleTheme()" class="absolute right-0 md:static w-10 h-10 md:w-12 md:h-12 rounded-xl bg-gray-100 dark:bg-gray-800 border border-gray-300 dark:border-gray-600 flex items-center justify-center text-gray-600 dark:text-yellow-400 hover:bg-gray-200 dark:hover:bg-gray-700 shadow-sm transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-red-500 flex-shrink-0 z-10">
+                        <i class="fa-solid fa-moon dark:hidden text-lg"></i>
+                        <i class="fa-solid fa-sun hidden dark:inline text-lg"></i>
+                    </button>
+
+                </div>
+            </div>
+        </nav>
+
+        <!-- PARTE INFERIOR: Título Móvil y Buscador (Estáticos al hacer scroll) -->
+        <div class="bg-white/95 dark:bg-gray-900/95 backdrop-blur-sm px-4 sm:px-6 lg:px-8 pt-4 pb-5 border-b border-gray-200 dark:border-gray-800 transition-colors duration-300">
+            <div class="max-w-7xl mx-auto">
+                
+                <!-- Título Móvil (Oculto en PC, debajo de la línea roja) -->
+                <div class="flex md:hidden flex-col items-center justify-center text-center mb-4 pointer-events-none">
+                    <div class="text-[1.1rem] sm:text-xl uppercase leading-tight text-gray-900 dark:text-white tracking-wider" style="font-family: 'Lequire Rounded', 'Montserrat', sans-serif; font-weight: 800;">
+                        Cancionero de
+                    </div>
+                    <div class="text-[1.4rem] sm:text-3xl uppercase leading-none text-red-600 mb-1 tracking-wide" style="font-family: 'Brioche', 'Montserrat', sans-serif; font-weight: 600;">
+                        Alabanzas
+                    </div>
+                    <div class="flex items-center justify-center gap-2 mt-1 w-full">
+                        <div class="h-[1.5px] bg-gradient-to-r from-transparent via-red-300 to-red-600 dark:via-red-800 dark:to-red-600 w-12 sm:w-16"></div>
+                        <i class="fa-solid fa-cross text-red-600 text-[10px]"></i>
+                        <div class="h-[1.5px] bg-gradient-to-l from-transparent via-red-300 to-red-600 dark:via-red-800 dark:to-red-600 w-12 sm:w-16"></div>
                     </div>
                 </div>
-                
-                <!-- Buscador Central (Ocupa el ancho restante) -->
-                <div class="w-full md:flex-1 flex justify-center order-2 px-1 md:px-6">
-                    <div class="w-full max-w-full lg:max-w-md relative text-gray-500 focus-within:text-red-600">
-                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+
+                <!-- Buscador Centralizado -->
+                <div class="w-full flex justify-center">
+                    <div class="w-full max-w-2xl relative text-gray-500 dark:text-gray-400 focus-within:text-red-600 dark:focus-within:text-red-500">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
                             <i class="fa-solid fa-search"></i>
                         </div>
-                        <input id="searchInput" oninput="handleSearch(this.value)" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-full leading-5 bg-gray-100 text-black placeholder-gray-500 focus:outline-none focus:bg-white focus:border-red-600 focus:ring-1 focus:ring-red-600 sm:text-sm transition-colors duration-200" placeholder="Buscar alabanza..." type="search">
+                        <input id="searchInput" oninput="handleSearch(this.value)" class="block w-full pl-11 pr-4 py-3 border border-gray-300 dark:border-gray-700 rounded-full leading-5 bg-gray-100 dark:bg-gray-800 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:bg-white dark:focus:bg-gray-700 focus:border-red-600 dark:focus:border-red-500 focus:ring-1 focus:ring-red-600 dark:focus:ring-red-500 sm:text-base transition-colors duration-300 shadow-inner font-medium" placeholder="Buscar alabanza..." type="search">
                     </div>
                 </div>
 
             </div>
         </div>
-    </nav>
+    </header>
 
     <!-- Contenedor Principal (Catálogo) -->
     <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
         
         <!-- Mensaje de estado de búsqueda -->
-        <div id="search-status" class="mb-6 text-gray-600 hidden">
-            Mostrando resultados para: <span id="search-term" class="text-red-600 font-semibold"></span>
+        <div id="search-status" class="mb-6 text-gray-600 dark:text-gray-400 hidden transition-colors duration-300 text-center">
+            Mostrando resultados para: <span id="search-term" class="text-red-600 dark:text-red-500 font-semibold"></span>
         </div>
 
         <!-- Grid de Canciones -->
@@ -111,53 +171,88 @@
 
         <!-- Estado Vacío -->
         <div id="empty-state" class="hidden flex flex-col items-center justify-center mt-20 text-center">
-            <div class="w-24 h-24 bg-white border-2 border-gray-200 rounded-full flex items-center justify-center mb-6 shadow-sm">
-                <i class="fa-solid fa-book-bible text-4xl text-red-600"></i>
+            <div class="w-24 h-24 bg-white dark:bg-gray-800 border-2 border-gray-200 dark:border-gray-700 rounded-full flex items-center justify-center mb-6 shadow-sm transition-colors duration-300">
+                <i class="fa-solid fa-book-bible text-4xl text-red-600 dark:text-red-500"></i>
             </div>
-            <h2 class="text-2xl font-bold text-black mb-2">No se encontraron alabanzas</h2>
-            <p class="text-gray-600 max-w-md">Parece que no hay alabanzas que coincidan con tu búsqueda.</p>
+            <h2 class="text-2xl font-bold text-black dark:text-white mb-2 transition-colors duration-300">No se encontraron alabanzas</h2>
+            <p class="text-gray-600 dark:text-gray-400 max-w-md transition-colors duration-300">Parece que no hay alabanzas que coincidan con tu búsqueda.</p>
         </div>
     </main>
 
+    <!-- Footer con Redes Sociales -->
+    <footer class="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-800 mt-auto py-8 transition-colors duration-300">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col items-center justify-center">
+            <h3 class="text-gray-800 dark:text-gray-300 font-bold mb-4 text-center transition-colors duration-300">Síguenos en nuestras redes sociales</h3>
+            <div class="flex space-x-4">
+                <!-- Facebook -->
+                <a href="https://www.facebook.com/icilima" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-full border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:border-blue-600 hover:bg-blue-600 dark:hover:bg-blue-600 hover:text-white dark:hover:text-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1" aria-label="Facebook">
+                    <i class="fa-brands fa-facebook-f text-xl"></i>
+                </a>
+                <!-- Instagram -->
+                <a href="https://www.instagram.com/icilima.peru/" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-full border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:border-transparent hover:bg-gradient-to-tr hover:from-yellow-400 hover:via-pink-500 hover:to-purple-600 hover:text-white dark:hover:text-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1" aria-label="Instagram">
+                    <i class="fa-brands fa-instagram text-xl"></i>
+                </a>
+                <!-- TikTok -->
+                <a href="https://www.tiktok.com/@ici_peru" target="_blank" rel="noopener noreferrer" class="w-12 h-12 rounded-full border-2 border-gray-200 dark:border-gray-700 flex items-center justify-center text-gray-600 dark:text-gray-400 hover:border-black hover:bg-black dark:hover:bg-gray-100 dark:hover:text-black hover:text-white transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1" aria-label="TikTok">
+                    <i class="fa-brands fa-tiktok text-xl"></i>
+                </a>
+            </div>
+            <p class="text-xs text-gray-400 dark:text-gray-500 mt-6 text-center transition-colors duration-300">&copy; Iglesia de Cristo Internacional - Lima, Perú</p>
+        </div>
+    </footer>
+
     <!-- Modal: Ver Canción (Lectura) -->
-    <div id="view-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
-        <div class="bg-white rounded-2xl w-full max-w-3xl shadow-2xl border border-gray-200 modal-enter flex flex-col h-[90vh] w-full">
+    <div id="view-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 dark:bg-black/90 backdrop-blur-md p-4 transition-colors duration-300">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl w-full max-w-3xl shadow-2xl border border-gray-200 dark:border-gray-700 modal-enter flex flex-col h-[90vh] w-full transition-colors duration-300">
             <!-- Cabecera de la canción -->
-            <div class="bg-gray-50 p-6 border-b border-gray-200 flex justify-between items-start rounded-t-2xl relative overflow-hidden">
-                <div class="absolute top-0 right-0 opacity-5 pointer-events-none">
-                    <i class="fa-solid fa-cross text-9xl transform translate-x-1/4 -translate-y-1/4 text-black"></i>
+            <div class="bg-gray-50 dark:bg-gray-900/50 p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-start rounded-t-2xl relative overflow-hidden transition-colors duration-300">
+                <div class="absolute top-0 right-0 opacity-5 dark:opacity-10 pointer-events-none">
+                    <i class="fa-solid fa-cross text-9xl transform translate-x-1/4 -translate-y-1/4 text-black dark:text-white"></i>
                 </div>
                 <div class="relative z-10 w-full pr-8">
-                    <h2 id="view-title" class="text-2xl md:text-3xl font-bold text-black mb-2 leading-tight">Título</h2>
-                    <p id="view-artist" class="text-red-600 text-base md:text-lg font-medium flex items-center">
-                        <i class="fa-solid fa-user mr-2 text-black"></i> Artista
+                    <h2 id="view-title" class="text-2xl md:text-3xl font-bold text-black dark:text-white mb-2 leading-tight transition-colors duration-300">Título</h2>
+                    <p id="view-artist" class="text-red-600 dark:text-red-400 text-base md:text-lg font-medium flex items-center transition-colors duration-300">
+                        <i class="fa-solid fa-user mr-2 text-black dark:text-gray-400 transition-colors duration-300"></i> Artista
                     </p>
                 </div>
-                <button onclick="closeViewModal()" class="text-gray-500 hover:text-black bg-gray-200 hover:bg-gray-300 p-2 rounded-full transition-colors absolute top-6 right-6 z-20">
+                <button onclick="closeViewModal()" class="text-gray-500 dark:text-gray-400 hover:text-black dark:hover:text-white bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 p-2 rounded-full transition-colors absolute top-6 right-6 z-20">
                     <i class="fa-solid fa-times text-xl"></i>
                 </button>
             </div>
             
             <!-- Cuerpo (Letra) -->
-            <div class="p-5 md:p-8 flex-1 overflow-y-auto bg-white">
+            <div class="p-5 md:p-8 flex-1 overflow-y-auto bg-white dark:bg-gray-900 transition-colors duration-300">
                 <div class="max-w-2xl mx-auto">
-                    <div class="mb-6 flex gap-2 justify-end">
-                        <button onclick="copyLyrics()" class="text-xs bg-gray-100 hover:bg-gray-200 text-black px-3 py-1.5 rounded-md transition-colors border border-gray-300 flex items-center shadow-sm">
-                            <i class="fa-regular fa-copy mr-1.5 text-red-600"></i> Copiar
+                    
+                    <!-- PANEL DE CONTROLES: Tamaño de letra y Copiar -->
+                    <div class="mb-6 flex flex-wrap gap-3 justify-between items-center bg-gray-50 dark:bg-gray-800 p-2 md:p-3 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm transition-colors duration-300">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider ml-1 hidden sm:inline-block transition-colors duration-300">Letra:</span>
+                            <button onclick="changeFontSize(-2)" class="w-8 h-8 bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg shadow-sm border border-gray-300 dark:border-gray-600 flex items-center justify-center transition-colors focus:ring-2 focus:ring-red-200 dark:focus:ring-red-900 font-bold" title="Reducir tamaño de letra">
+                                A-
+                            </button>
+                            <button onclick="changeFontSize(2)" class="w-8 h-8 bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg shadow-sm border border-gray-300 dark:border-gray-600 flex items-center justify-center transition-colors focus:ring-2 focus:ring-red-200 dark:focus:ring-red-900 font-bold text-lg" title="Aumentar tamaño de letra">
+                                A+
+                            </button>
+                        </div>
+                        <button onclick="copyLyrics()" class="text-xs md:text-sm font-semibold bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-black dark:text-gray-100 px-3 py-1.5 md:py-2 rounded transition-colors border border-gray-300 dark:border-gray-600 flex items-center shadow-sm whitespace-nowrap">
+                            <i class="fa-regular fa-copy mr-1.5 text-red-600 dark:text-red-400"></i> Copiar Letra
                         </button>
                     </div>
-                    <!-- Tamaño de letra adaptativo: base en celular, lg en PC -->
-                    <div id="view-lyrics" class="letra-cancion text-black text-base md:text-lg font-medium tracking-wide">
+
+                    <!-- LETRA DE LA CANCIÓN: Alineada al centro y con tamaño dinámico -->
+                    <div id="view-lyrics" class="letra-cancion text-black dark:text-gray-100 font-medium tracking-wide text-center pb-10 transition-colors duration-300">
                         <!-- La letra se insertará aquí -->
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Mensaje Toast (Notificaciones flotantes) -->
-    <div id="toast" class="fixed bottom-5 right-5 transform translate-y-20 opacity-0 transition-all duration-300 z-50 bg-black text-white px-6 py-3 rounded-lg shadow-xl font-medium flex items-center border-l-4 border-red-600">
-        <i class="fa-solid fa-circle-check mr-2 text-red-500"></i>
+    <div id="toast" class="fixed bottom-5 right-5 transform translate-y-20 opacity-0 transition-all duration-300 z-50 bg-black text-white px-6 py-3 rounded-lg shadow-xl font-medium flex items-center border-l-4 border-red-600 dark:border-red-500">
+        <i class="fa-solid fa-circle-check mr-2 text-red-500 dark:text-red-400"></i>
         <span id="toast-message">Acción completada</span>
     </div>
 
@@ -168,7 +263,6 @@
         // ==========================================
         // 1. AÑADE TUS ALABANZAS POR CÓDIGO AQUÍ
         // ==========================================
-        // El sistema las ordenará automáticamente por el campo 'id' de menor a mayor.
         const cancionesBase = [
             {
                 id: 1,
@@ -186,7 +280,7 @@
                 id: 5,
                 title: "5. Canción para la Batalla",
                 artist: "Alabanza",
-                lyrics: "Ya se ve la luz de un nuevo día,\nes la tierra nueva\nque el Señor nos prometió.\nUn mundo sin fe,\nsin amor, sin esperanza,\nnos espera hoy ansioso para ver\nsu liberación.\n\nSeñor -Señor y Dios -\nGuíanos a la batalla. (x2)\nDanos triunfo en la batalla y al final\nla fe renacerá.\n\nMira Oh Dios, a tu pueblo en la llanura\nbrazo con brazo\nante el nuevo amanecer.\nEn nuestros corazones\nhay sueños y esperanzas,\npero tuya es la gloria y el honor,\ny tuyo es el poder.\n\nSeñor -Señor y Dios-\nGuíanos a la batalla (x2)\nDanos triunfo en la batalla y al final\nel amor nos sostendrá.\n\nEl Señor es la fuerza de su pueblo.\nSu amor nos ha llenado\nde valor y convicción.\nLos hombres sin Dios\nson desiertos solitarios.\nEl mundo necesita conocer\nel amor de nuestro Dios.\n\nSeñor -Señor y Dios-\nGuíanos a la batalla (x2)\nDanos triunfo en la batalla y al final\nla esperanza alumbrará.\n\n...el amor nos sostendrá.\n\n...la fe renacerá..."
+                lyrics: "Ya se ve la luz de un nuevo día,\nes la tierra nueva\nque el Señor nos prometió.\nUn mundo sin fe,\nsin amor, sin esperanza,\nnos espera hoy ansioso para ver\nsu liberación.\n\nSeñor -Señor y Dios -\nGuíanos a la batalla. (x2)\nDanos triunfo en la batalla y al final\nla fe renacerá.\n\nMira Oh Dios, a tu pueblo en la llanura\nbrazo con brazo\nante el nuevo amanecer.\nEn nuestros corazones\nhay sueños y esperanzas,\npero tuya es la gloria y el honor,\ny tuyo es el poder.\n\nSeñor -Señor y Dios-\nGuíanos a la batalla (x2)\nDanos triunfo en la batalla y al final\el amor nos sostendrá.\n\nEl Señor es la fuerza de su pueblo.\nSu amor nos ha llenado\nde valor y convicción.\nLos hombres sin Dios\nson desiertos solitarios.\nEl mundo necesita conocer\nel amor de nuestro Dios.\n\nSeñor -Señor y Dios-\nGuíanos a la batalla (x2)\nDanos triunfo en la batalla y al final\nla esperanza alumbrará.\n\n...el amor nos sostendrá.\n\n...la fe renacerá..."
             },
             {
                 id: 6,
@@ -265,17 +359,30 @@
         // --- BASE DE DATOS COMBINADA ---
         let database = [...cancionesBase];
 
+        // --- CONFIGURACIÓN DE TAMAÑO DE LETRA ---
+        let currentFontSize = parseInt(localStorage.getItem('cancionero_fontSize')) || 18;
+
         // Elementos del DOM
         const gridEl = document.getElementById('songs-grid');
         const emptyStateEl = document.getElementById('empty-state');
         const searchInput = document.getElementById('searchInput');
         const searchStatus = document.getElementById('search-status');
         const searchTermSpan = document.getElementById('search-term');
-
-        // Modales
         const viewModal = document.getElementById('view-modal');
 
         // --- LÓGICA PRINCIPAL ---
+
+        // Alternar Tema (Claro / Oscuro)
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                localStorage.setItem('theme', 'light');
+            } else {
+                html.classList.add('dark');
+                localStorage.setItem('theme', 'dark');
+            }
+        }
 
         function renderSongs(query = '') {
             if (!query) {
@@ -302,25 +409,25 @@
             }
         }
 
-        // Diseño de la tarjeta de canción
+        // Diseño de la tarjeta de canción adaptada al Modo Oscuro
         function createSongCard(song) {
             const preview = song.lyrics.substring(0, 60).replace(/\n/g, ' ') + '...';
             
             return `
-                <div class="bg-white rounded-xl border border-gray-200 hover:border-red-600 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-red-600/10 hover:-translate-y-1 flex flex-col group cursor-pointer" onclick="openViewModal(${song.id})">
+                <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-red-600 dark:hover:border-red-500 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-red-600/10 flex flex-col group cursor-pointer" onclick="openViewModal(${song.id})">
                     <div class="p-5 flex-1">
                         <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-bold text-lg text-black group-hover:text-red-600 transition-colors line-clamp-1">${song.title}</h3>
-                            <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0 group-hover:bg-red-600 transition-colors">
-                                <i class="fa-solid fa-play text-xs text-gray-800 group-hover:text-white pl-0.5 transition-colors"></i>
+                            <h3 class="font-bold text-lg text-black dark:text-white group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors line-clamp-1">${song.title}</h3>
+                            <div class="w-8 h-8 rounded-full bg-gray-100 dark:bg-gray-700 flex items-center justify-center flex-shrink-0 group-hover:bg-red-600 transition-colors">
+                                <i class="fa-solid fa-play text-xs text-gray-800 dark:text-gray-200 group-hover:text-white pl-0.5 transition-colors"></i>
                             </div>
                         </div>
-                        <p class="text-red-600 text-sm font-medium mb-4"><i class="fa-solid fa-user mr-1 text-xs text-black"></i> ${song.artist}</p>
-                        <p class="text-gray-600 text-sm italic line-clamp-2 border-l-2 border-red-200 pl-2">"${preview}"</p>
+                        <p class="text-red-600 dark:text-red-400 text-sm font-medium mb-4"><i class="fa-solid fa-user mr-1 text-xs text-black dark:text-gray-400"></i> ${song.artist}</p>
+                        <p class="text-gray-600 dark:text-gray-400 text-sm italic line-clamp-2 border-l-2 border-red-200 dark:border-red-800 pl-2">"${preview}"</p>
                     </div>
-                    <div class="bg-gray-50 px-5 py-3 border-t border-gray-100 flex justify-between items-center">
-                        <span class="text-xs text-gray-500">Haz clic para leer</span>
-                        <i class="fa-solid fa-arrow-right text-gray-400 group-hover:text-red-600 transition-colors"></i>
+                    <div class="bg-gray-50 dark:bg-gray-900/50 px-5 py-3 border-t border-gray-100 dark:border-gray-700 flex justify-between items-center transition-colors duration-300">
+                        <span class="text-xs text-gray-500 dark:text-gray-400">Haz clic para leer</span>
+                        <i class="fa-solid fa-arrow-right text-gray-400 dark:text-gray-500 group-hover:text-red-600 dark:group-hover:text-red-500 transition-colors"></i>
                     </div>
                 </div>
             `;
@@ -336,16 +443,35 @@
             renderSongs(value);
         }
 
+        // Aplicar Tamaño de Letra
+        function applyFontSize() {
+            const lyricsEl = document.getElementById('view-lyrics');
+            if (lyricsEl) {
+                lyricsEl.style.fontSize = currentFontSize + 'px';
+            }
+        }
+
+        // Aumentar o Disminuir Tamaño
+        function changeFontSize(changeValue) {
+            currentFontSize += changeValue;
+            if (currentFontSize < 12) currentFontSize = 12;
+            if (currentFontSize > 40) currentFontSize = 40;
+            localStorage.setItem('cancionero_fontSize', currentFontSize);
+            applyFontSize();
+        }
+
         function openViewModal(songId) {
             const song = database.find(s => s.id === songId);
             if (!song) return;
 
             document.getElementById('view-title').textContent = song.title;
-            document.getElementById('view-artist').innerHTML = `<i class="fa-solid fa-user mr-2 text-black"></i> ${song.artist}`;
+            document.getElementById('view-artist').innerHTML = `<i class="fa-solid fa-user mr-2 text-black dark:text-gray-400"></i> ${song.artist}`;
             
-            // Resaltar la palabra CORO (con o sin dos puntos) en rojo y negrita
-            const formattedLyrics = song.lyrics.replace(/\b(CORO:?)\b/gi, '<span class="text-red-600 font-bold">$1</span>');
+            // Resaltar la palabra CORO
+            const formattedLyrics = song.lyrics.replace(/\b(CORO:?)\b/gi, '<span class="text-red-600 dark:text-red-500 font-bold">$1</span>');
             document.getElementById('view-lyrics').innerHTML = formattedLyrics;
+
+            applyFontSize();
 
             viewModal.classList.remove('hidden');
             document.body.style.overflow = 'hidden';
@@ -383,10 +509,12 @@
             
             if (isError) {
                 toast.classList.replace('border-red-600', 'border-gray-500');
-                toast.innerHTML = `<i class="fa-solid fa-circle-exclamation mr-2 text-red-500"></i> <span id="toast-message">${message}</span>`;
+                toast.classList.replace('dark:border-red-500', 'dark:border-gray-600');
+                toast.innerHTML = `<i class="fa-solid fa-circle-exclamation mr-2 text-red-500 dark:text-red-400"></i> <span id="toast-message">${message}</span>`;
             } else {
                 toast.classList.replace('border-gray-500', 'border-red-600');
-                toast.innerHTML = `<i class="fa-solid fa-circle-check mr-2 text-red-500"></i> <span id="toast-message">${message}</span>`;
+                toast.classList.replace('dark:border-gray-600', 'dark:border-red-500');
+                toast.innerHTML = `<i class="fa-solid fa-circle-check mr-2 text-red-500 dark:text-red-400"></i> <span id="toast-message">${message}</span>`;
             }
 
             toast.classList.remove('translate-y-20', 'opacity-0');

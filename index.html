@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alabanzas - Iglesia de Cristo</title>
+    <!-- Usamos Tailwind CSS para un diseño moderno y responsivo -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Iconos de FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Fuente cursiva oficial de Google Fonts para el logo -->
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+    <style>
+        /* Estilos personalizados para la barra de desplazamiento y transiciones */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f9fafb; /* Fondo principal gris muy claro/blanco */
+            color: #000000; /* Texto principal negro */
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f3f4f6; /* Gris muy claro */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #ef4444; /* Rojo */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #dc2626; /* Rojo más oscuro */
+        }
+        .modal-enter {
+            animation: fadeIn 0.3s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95) translateY(-10px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        /* Preservar los saltos de línea en las letras de las canciones */
+        .letra-cancion {
+            white-space: pre-wrap;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col relative bg-gray-50 text-black">
+
+    <!-- Navegación y Menú -->
+    <nav class="bg-white shadow-lg sticky top-0 z-10 border-b-4 border-red-600">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3">
+            <div class="flex flex-wrap md:flex-nowrap justify-between items-center gap-y-4 gap-x-2">
+                
+                <!-- Logo de la Iglesia adaptado y con cuadro rojo (Se adapta en móviles) -->
+                <div class="flex-shrink-0 flex items-center cursor-pointer border-2 border-red-600 p-1.5 md:p-2 rounded-lg bg-white order-1" onclick="renderSongs()">
+                    <!-- Icono del faro dibujado a mano -->
+                    <div class="mr-2">
+                        <svg class="w-9 h-12 md:w-12 md:h-16" viewBox="0 0 100 150" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="48" y="10" width="4" height="30" fill="black"/>
+                            <!-- Banderas rojas -->
+                            <path d="M50 15 Q70 10 65 25 Q55 20 50 25 Z" fill="#dc2626"/>
+                            <path d="M50 35 Q70 30 65 45 Q55 40 50 45 Z" fill="#dc2626"/>
+                            <!-- Techo/Linterna -->
+                            <path d="M30 45 C40 45, 45 40, 50 35 C55 40, 60 45, 70 45 L65 50 L35 50 Z" fill="black"/>
+                            <path d="M15 55 Q50 65 85 55 L85 60 L15 60 Z" fill="black"/>
+                            <rect x="35" y="60" width="30" height="15" fill="black"/>
+                            <rect x="25" y="75" width="50" height="10" fill="black"/>
+                            <!-- Base curva -->
+                            <path d="M30 85 C30 85, 20 135, 20 145 C20 150, 80 150, 80 145 C80 135, 70 85, 70 85 Z" fill="black"/>
+                            <!-- Franjas blancas -->
+                            <path d="M26 100 Q50 110 74 100 L76 110 Q50 120 24 110 Z" fill="white"/>
+                            <path d="M22 122 Q50 132 78 122 L79 130 Q50 140 21 130 Z" fill="white"/>
+                        </svg>
+                    </div>
+                    <!-- Texto del logo -->
+                    <div class="flex flex-col justify-center mt-1">
+                        <span class="text-red-600 text-2xl md:text-4xl leading-none" style="font-family: 'Dancing Script', cursive; margin-bottom: -6px; padding-left: 5px;">Iglesia de</span>
+                        <span class="text-black text-3xl md:text-5xl leading-none" style="font-family: 'Dancing Script', cursive;">Cristo</span>
+                        <span class="text-black text-[0.5rem] md:text-[0.65rem] tracking-[0.2em] font-sans font-bold uppercase text-center border-t border-gray-300 pt-0.5 mt-1">
+                            Internacional
+                        </span>
+                    </div>
+                </div>
+                
+                <!-- Buscador Central (Ocupa el ancho restante) -->
+                <div class="w-full md:flex-1 flex justify-center order-2 px-1 md:px-6">
+                    <div class="w-full max-w-full lg:max-w-md relative text-gray-500 focus-within:text-red-600">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fa-solid fa-search"></i>
+                        </div>
+                        <input id="searchInput" oninput="handleSearch(this.value)" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-full leading-5 bg-gray-100 text-black placeholder-gray-500 focus:outline-none focus:bg-white focus:border-red-600 focus:ring-1 focus:ring-red-600 sm:text-sm transition-colors duration-200" placeholder="Buscar alabanza..." type="search">
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenedor Principal (Catálogo) -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+        
+        <!-- Mensaje de estado de búsqueda -->
+        <div id="search-status" class="mb-6 text-gray-600 hidden">
+            Mostrando resultados para: <span id="search-term" class="text-red-600 font-semibold"></span>
+        </div>
+
+        <!-- Grid de Canciones -->
+        <div id="songs-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Las canciones se inyectarán aquí mediante JavaScript -->
+        </div>
+
+        <!-- Estado Vacío -->
+        <div id="empty-state" class="hidden flex flex-col items-center justify-center mt-20 text-center">
+            <div class="w-24 h-24 bg-white border-2 border-gray-200 rounded-full flex items-center justify-center mb-6 shadow-sm">
+                <i class="fa-solid fa-book-bible text-4xl text-red-600"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-black mb-2">No se encontraron alabanzas</h2>
+            <p class="text-gray-600 max-w-md">Parece que no hay alabanzas que coincidan con tu búsqueda.</p>
+        </div>
+    </main>
+
+    <!-- Modal: Ver Canción (Lectura) -->
+    <div id="view-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 backdrop-blur-md p-4">
+        <div class="bg-white rounded-2xl w-full max-w-3xl shadow-2xl border border-gray-200 modal-enter flex flex-col h-[90vh] w-full">
+            <!-- Cabecera de la canción -->
+            <div class="bg-gray-50 p-6 border-b border-gray-200 flex justify-between items-start rounded-t-2xl relative overflow-hidden">
+                <div class="absolute top-0 right-0 opacity-5 pointer-events-none">
+                    <i class="fa-solid fa-cross text-9xl transform translate-x-1/4 -translate-y-1/4 text-black"></i>
+                </div>
+                <div class="relative z-10 w-full pr-8">
+                    <h2 id="view-title" class="text-2xl md:text-3xl font-bold text-black mb-2 leading-tight">Título</h2>
+                    <p id="view-artist" class="text-red-600 text-base md:text-lg font-medium flex items-center">
+                        <i class="fa-solid fa-user mr-2 text-black"></i> Artista
+                    </p>
+                </div>
+                <button onclick="closeViewModal()" class="text-gray-500 hover:text-black bg-gray-200 hover:bg-gray-300 p-2 rounded-full transition-colors absolute top-6 right-6 z-20">
+                    <i class="fa-solid fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <!-- Cuerpo (Letra) -->
+            <div class="p-5 md:p-8 flex-1 overflow-y-auto bg-white">
+                <div class="max-w-2xl mx-auto">
+                    <div class="mb-6 flex gap-2 justify-end">
+                        <button onclick="copyLyrics()" class="text-xs bg-gray-100 hover:bg-gray-200 text-black px-3 py-1.5 rounded-md transition-colors border border-gray-300 flex items-center shadow-sm">
+                            <i class="fa-regular fa-copy mr-1.5 text-red-600"></i> Copiar
+                        </button>
+                    </div>
+                    <!-- Tamaño de letra adaptativo: base en celular, lg en PC -->
+                    <div id="view-lyrics" class="letra-cancion text-black text-base md:text-lg font-medium tracking-wide">
+                        <!-- La letra se insertará aquí -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mensaje Toast (Notificaciones flotantes) -->
+    <div id="toast" class="fixed bottom-5 right-5 transform translate-y-20 opacity-0 transition-all duration-300 z-50 bg-black text-white px-6 py-3 rounded-lg shadow-xl font-medium flex items-center border-l-4 border-red-600">
+        <i class="fa-solid fa-circle-check mr-2 text-red-500"></i>
+        <span id="toast-message">Acción completada</span>
+    </div>
+
+    <!-- ========================================================= -->
+    <!-- ZONA DE LÓGICA Y BASE DE DATOS -->
+    <!-- ========================================================= -->
+    <script>
+        // ==========================================
+        // 1. AÑADE TUS ALABANZAS POR CÓDIGO AQUÍ
+        // ==========================================
+        // El sistema las ordenará automáticamente por el campo 'id' de menor a mayor.
+        const cancionesBase = [
+            {
+                id: 1,
+                title: "1. Canción de Fiesta",
+                artist: "Alabanza",
+                lyrics: "La-lalalaia-lalalaia-lalalaia...(x2)\n\n¡Canten con alegría\na Dios nuestro defensor.\nToquen las trompetas\npara la fiesta del Señor.\nCanten con alegría\ny una profunda gratitud\nal Dios que puede darles\n/// la eterna salvación ///\n\nLa lalalaia...\n\nEscuchen al Eterno\nsu voz es poderosa.\nAnuncien a todo el mundo,\n/// ¡cómo está viva su gloria! ///\n\nPreparen el camino\n- Para el Rey de Israel\nPreparen el camino\n- Para su siervo fiel\n(x2)\n\nLa lalalaia....\n\nFeliz es aquel\n- que escucha a Dios\nFeliz es aquel\n- que se humilla ante el Señor\nFeliz es aquel\n- que anuncia a Dios\nFeliz es aquel\nque sus pecados Dios perdona,\nsus pecados Dios perdona,\nsus pecados Dios perdona.\n\nLa lalalaia..."
+            },
+            {
+                id: 4,
+                title: "4. Nada en mi camino",
+                artist: "Alabanza",
+                lyrics: "No habrá roca, en mi camino,\nmientras yo viva y glorifique\na mi Dios ¡A mi Dios! (x2).\n\nCORO:\nVoy a alabar, al ¡Santo Rey!,\nmientras yo viva y glorifique\na mi Dios ¡A mi Dios! (x2).\n\nNo habrá fuego, que me asuste,\nmientras yo viva y glorifique\na mi Dios ¡A mi Dios! (x2).\n\nCORO\n\nNo habrán aguas, que nos separen,\nmientras yo viva y glorifique\na mi Dios ¡A mi Dios! (x2).\n\nCORO\n\nNo habrá: ¡roca! ¡fuego! ¡agua!\nque me callen,\nmientras yo viva y glorifique\na mi Dios ¡A mi Dios! (x2).\n\nCORO"
+            },
+            {
+                id: 5,
+                title: "5. Canción para la Batalla",
+                artist: "Alabanza",
+                lyrics: "Ya se ve la luz de un nuevo día,\nes la tierra nueva\nque el Señor nos prometió.\nUn mundo sin fe,\nsin amor, sin esperanza,\nnos espera hoy ansioso para ver\nsu liberación.\n\nSeñor -Señor y Dios -\nGuíanos a la batalla. (x2)\nDanos triunfo en la batalla y al final\nla fe renacerá.\n\nMira Oh Dios, a tu pueblo en la llanura\nbrazo con brazo\nante el nuevo amanecer.\nEn nuestros corazones\nhay sueños y esperanzas,\npero tuya es la gloria y el honor,\ny tuyo es el poder.\n\nSeñor -Señor y Dios-\nGuíanos a la batalla (x2)\nDanos triunfo en la batalla y al final\nel amor nos sostendrá.\n\nEl Señor es la fuerza de su pueblo.\nSu amor nos ha llenado\nde valor y convicción.\nLos hombres sin Dios\nson desiertos solitarios.\nEl mundo necesita conocer\nel amor de nuestro Dios.\n\nSeñor -Señor y Dios-\nGuíanos a la batalla (x2)\nDanos triunfo en la batalla y al final\nla esperanza alumbrará.\n\n...el amor nos sostendrá.\n\n...la fe renacerá..."
+            },
+            {
+                id: 6,
+                title: "6. ¡Gracias Dios!",
+                artist: "Alabanza",
+                lyrics: "¡Gracias Dios por tu bondad!\nTe alabo por tu majestad.\n¡Gracias por tu inmenso amor!\nque envió el Salvador.\n\nCORO:\n¡Gracias Dios, por tu bondad!\n¡Gracias por tu gran fidelidad!\n\nMuéstrame tu santo ser\ninfunde en mí tu gran poder\nquiero de tu amor hablar\ny por tu senda andar.\n\nCORO\n\nAlabemos a una voz\nel nombre del potente Dios\nelevemos en su honor\nun canto de amor.\n\nCORO"
+            },
+            {
+                id: 7,
+                title: "7. La Alegría",
+                artist: "Alabanza",
+                lyrics: "La alegría está en el corazón\nde quien ya conoce a Jesús,\nla verdadera paz la tiene aquel\nque ya conoce a Jesús\n¡Aleluya!\n\nCORO:\n¡Qué sentimiento más precioso\nque viene del Señor!\nEl amor de aquel\nque ya conoce a Jesús.\n\nAleluya! (x4)\n¡Aleluya!\n\nCORO"
+            },
+            {
+                id: 8,
+                title: "8. Gloria, Gloria",
+                artist: "Alabanza",
+                lyrics: "CORO:\nGloria, gloria, Aleluya\nya dejé mi carga atrás. (x2)\n\nSoy feliz, muy feliz,\nya dejé mi carga atrás.\n\nCORO\n\nVoy a ver a Jesús,\nya dejé mi carga atrás.\n\nCORO\n\nVoy a estar en un banquete,\nya dejé mi carga atrás.\n\nCORO"
+            },
+            {
+                id: 11,
+                title: "11. El Dios Eterno",
+                artist: "Alabanza",
+                lyrics: "CORO:\nEl Dios Eterno es poderoso,\nno ha perdido su fuerza,\nel Dios eterno está listo a salvar.\nIluminó mi camino,\nya cambió mi destino,\nel Dios Eterno está listo a salvar.\n(x2)\n\nEl Dios que vence toda barrera\ncon amor, con fe y perdón.\nUna vida cierta y verdadera,\nsoy parte de la familia\ny yo voy con gratitud.\n\nCORO"
+            },
+            {
+                id: 15,
+                title: "15. Jesús, Jesús",
+                artist: "Alabanza",
+                lyrics: "Jesús, Jesús yo te amo a ti\nPor morir así por mí.\nAhora es tiempo de decir,\n¡Gracias! por amarme así.\n\nCORO:\n-Y en el valle de las sombras\nJesús me acompaña\n-Cuando animo a los hermanos\nJesús me acompaña\n-Cuando predico su Palabra\nJesús me acompaña\nHasta el final.\n\nCuando estaba engañado\nVivía desanimado.\nTú me tomaste de la mano\nY me pusiste a tu lado.\n\nCORO\n\nCuando oí de tu Palabra\nAlgo dentro en mí gritaba,\nQue tú a través de ella hablabas,\ny el camino me mostrabas.\n\nCORO"
+            },
+            {
+                id: 16,
+                title: "16. Luz Verdadera",
+                artist: "Alabanza",
+                lyrics: "Un hombre ciego paró y clamó (x3)\nClamó oh, oh, oh.\nDame la luz (x3)\nLa luz de verdad.\n\nUn hombre cojo echado clamó (x3)\nClamó oh, oh, oh.\nDame la luz (x3)\nLa luz de verdad.\n\nLa mujer al lado del pozo clamó (x3)\nClamó, oh, oh, oh.\nDame la luz (x3)\nLa luz de verdad.\n\nJesús murió en la cruz  y clamó (x3)\nClamó, oh, oh, oh.\nDales la luz (x3)\nLa luz de verdad.\n\nResucitó Jesús de la tumba y clamó\n(x3)\nClamó, oh, oh, oh.\nYo soy la luz (x3)\nLa luz de verdad.\n\nSigue la luz (x3)\n¡Cristo!"
+            },
+            {
+                id: 17,
+                title: "17. Aleluya",
+                artist: "Alabanza",
+                lyrics: "Cantamos con el corazón\nal mundo entero sin temor,\ndel Señor y su verdad,\nlas naciones oirán:\n\nCORO:\nA____le___lu___ya (H)\nAleluya  alelu alelu leeluya (M)\n\nCruces, sangre y el perdón,\nel mundo tiembla  de  temor,\nel juicio y la bondad de Dios,\nveremos pronto al Salvador.\n\nCORO\n\nDios es mi razón de ser,\nsirviente soy, Él es el Rey,\ntodo honor y vida y paz,\nviviendo en su iglesia actual.\n\nCORO\n\nÉl es justo, Él es amor,\nbusquemos juntos al Señor,\nsoberano y justo es Él,\nsu Palabra siempre es fiel.\n\nCORO\n\nLa vida muy corta es\nno pierdas la  oportunidad.\nBuscar a Dios de corazón\nConfiando El te cambiará."
+            },
+            {
+                id: 30,
+                title: "30. El Señor está dentro de mí",
+                artist: "Alabanza",
+                lyrics: "El Señor está dentro de mí.\n-Mi Señor -\nEl Señor me salva.\n-Mi Señor -\nEl por mí se alegrará,\ny su amor me renovará.\nY  dejará sobre mí:\nAlegría  (x3)\n\nAlegría - El me llenará.\nAlegría - Me renovará.\nAlegría - El me salvará.\nAlegría - Y me amará."
+            },
+            {
+                id: 31,
+                title: "31. De nuevo al hogar",
+                artist: "Alabanza",
+                lyrics: "H: Oh, oh, oh...\nM: Jesucristo me enseñó a cantar.\nJesucristo me enseñó a orar.\nJesucristo me enseñó a sonreír.\nY El trajo luz a mi caminar.\n\nH: Oh, oh, oh...\nM: Jesucristo quitó mi pensar.\nJesucristo me enseña a amar.\nY Él promete que me tomará.\nMi Dios me lleva de nuevo al hogar.\n\nH: Viviendo me dio fatiga y dolor.\nM: Sufriendo mató en mí todo amor.\nH: Mi andar..\nM: era a cualquier lugar.\nH: Mi placer...\nM: Llevó a Jesús a morir.\n\nSu perdón brilló en mi corazón,\nsu amor me llena de gratitud.\nEstando en Él,\nseguro, fuerte ¡Señor!\nMi Dios me lleva de nuevo al hogar."
+            },
+            {
+                id: 34,
+                title: "34. Doy lo Mejor",
+                artist: "Alabanza",
+                lyrics: "CORO:\nDoy lo mejor, doy lo mejor\ndoy lo mejor por ti. (x2)\n\nQuiero cantar (cantar)\nCantar (cantar)\nCantar al Señor por siempre (x2)\n\nCORO\n\nQuiero orar...\nQuiero servir...\nQuiero palmar..."
+            },
+            {
+                id: 37,
+                title: "37. Canta Amén, Amén",
+                artist: "Alabanza",
+                lyrics: "CORO:\nCanta Amén, Amén,\nRíe Amén, Amén\nGloria para Dios,\nAmén, Amén. (x2)\n\nCuando regrese el Señor,\ncantarás así: Amén, Amén. (x2)"
+            },
+            {
+                id: 39,
+                title: "39. Te alabaré",
+                artist: "Alabanza",
+                lyrics: "Eres Tú la única razón\nde mi adoración, oh Jesús.\nEres Tú la esperanza que\nanhelé tener, oh Jesús.\nConfié en Ti me has ayudado,\ntu salvación me has regalado.\n\nHoy hay gozo en mi corazón,\ncon mi canto te alabaré.\n\nCORO\nTe alabaré, te glorificaré,\nte alabaré, mi buen Jesús. (x2)\n\nEn todo tiempo te adoraré,\nen todo tiempo te alabaré."
+            }
+        ];
+
+        // --- BASE DE DATOS COMBINADA ---
+        let database = [...cancionesBase];
+
+        // Elementos del DOM
+        const gridEl = document.getElementById('songs-grid');
+        const emptyStateEl = document.getElementById('empty-state');
+        const searchInput = document.getElementById('searchInput');
+        const searchStatus = document.getElementById('search-status');
+        const searchTermSpan = document.getElementById('search-term');
+
+        // Modales
+        const viewModal = document.getElementById('view-modal');
+
+        // --- LÓGICA PRINCIPAL ---
+
+        function renderSongs(query = '') {
+            if (!query) {
+                searchInput.value = '';
+                searchStatus.classList.add('hidden');
+            }
+
+            const filteredSongs = database.filter(song => {
+                const searchLower = query.toLowerCase();
+                return song.title.toLowerCase().includes(searchLower) || 
+                       song.artist.toLowerCase().includes(searchLower) ||
+                       song.lyrics.toLowerCase().includes(searchLower);
+            });
+
+            // Siempre ordena las canciones por su 'id' de menor a mayor.
+            filteredSongs.sort((a, b) => a.id - b.id);
+
+            if (filteredSongs.length === 0) {
+                gridEl.innerHTML = '';
+                emptyStateEl.classList.remove('hidden');
+            } else {
+                emptyStateEl.classList.add('hidden');
+                gridEl.innerHTML = filteredSongs.map(song => createSongCard(song)).join('');
+            }
+        }
+
+        // Diseño de la tarjeta de canción
+        function createSongCard(song) {
+            const preview = song.lyrics.substring(0, 60).replace(/\n/g, ' ') + '...';
+            
+            return `
+                <div class="bg-white rounded-xl border border-gray-200 hover:border-red-600 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-red-600/10 hover:-translate-y-1 flex flex-col group cursor-pointer" onclick="openViewModal(${song.id})">
+                    <div class="p-5 flex-1">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-lg text-black group-hover:text-red-600 transition-colors line-clamp-1">${song.title}</h3>
+                            <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0 group-hover:bg-red-600 transition-colors">
+                                <i class="fa-solid fa-play text-xs text-gray-800 group-hover:text-white pl-0.5 transition-colors"></i>
+                            </div>
+                        </div>
+                        <p class="text-red-600 text-sm font-medium mb-4"><i class="fa-solid fa-user mr-1 text-xs text-black"></i> ${song.artist}</p>
+                        <p class="text-gray-600 text-sm italic line-clamp-2 border-l-2 border-red-200 pl-2">"${preview}"</p>
+                    </div>
+                    <div class="bg-gray-50 px-5 py-3 border-t border-gray-100 flex justify-between items-center">
+                        <span class="text-xs text-gray-500">Haz clic para leer</span>
+                        <i class="fa-solid fa-arrow-right text-gray-400 group-hover:text-red-600 transition-colors"></i>
+                    </div>
+                </div>
+            `;
+        }
+
+        function handleSearch(value) {
+            if (value.trim() !== '') {
+                searchStatus.classList.remove('hidden');
+                searchTermSpan.textContent = value;
+            } else {
+                searchStatus.classList.add('hidden');
+            }
+            renderSongs(value);
+        }
+
+        function openViewModal(songId) {
+            const song = database.find(s => s.id === songId);
+            if (!song) return;
+
+            document.getElementById('view-title').textContent = song.title;
+            document.getElementById('view-artist').innerHTML = `<i class="fa-solid fa-user mr-2 text-black"></i> ${song.artist}`;
+            
+            // Resaltar la palabra CORO (con o sin dos puntos) en rojo y negrita
+            const formattedLyrics = song.lyrics.replace(/\b(CORO:?)\b/gi, '<span class="text-red-600 font-bold">$1</span>');
+            document.getElementById('view-lyrics').innerHTML = formattedLyrics;
+
+            viewModal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+            document.querySelector('#view-modal .overflow-y-auto').scrollTop = 0;
+        }
+
+        function closeViewModal() {
+            viewModal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+
+        function copyLyrics() {
+            const lyrics = document.getElementById('view-lyrics').textContent;
+            
+            const textArea = document.createElement("textarea");
+            textArea.value = lyrics;
+            document.body.appendChild(textArea);
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                showToast('¡Letra copiada al portapapeles!');
+            } catch (err) {
+                showToast('Error al copiar', true);
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
+        function showToast(message, isError = false) {
+            const toast = document.getElementById('toast');
+            const toastMessage = document.getElementById('toast-message');
+            
+            toastMessage.textContent = message;
+            
+            if (isError) {
+                toast.classList.replace('border-red-600', 'border-gray-500');
+                toast.innerHTML = `<i class="fa-solid fa-circle-exclamation mr-2 text-red-500"></i> <span id="toast-message">${message}</span>`;
+            } else {
+                toast.classList.replace('border-gray-500', 'border-red-600');
+                toast.innerHTML = `<i class="fa-solid fa-circle-check mr-2 text-red-500"></i> <span id="toast-message">${message}</span>`;
+            }
+
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        window.onclick = function(event) {
+            if (event.target === viewModal) closeViewModal();
+        }
+
+        window.onload = () => {
+            renderSongs();
+        };
+
+    </script>
+</body>
+</html>

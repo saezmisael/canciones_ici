@@ -42,6 +42,10 @@
         html.dark ::-webkit-scrollbar-thumb { background: #ef4444; }
         html.dark ::-webkit-scrollbar-thumb:hover { background: #b91c1c; }
 
+        /* Ocultar scrollbar visual para la barra alfabética */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
         .modal-enter {
             animation: fadeIn 0.3s ease-out forwards;
         }
@@ -152,6 +156,13 @@
                     </div>
                 </div>
 
+                <!-- Barra de Filtro Alfabético (A-Z) -->
+                <div class="w-full mt-4 overflow-x-auto hide-scrollbar flex justify-start md:justify-center">
+                    <div id="alphabet-container" class="flex gap-1.5 md:gap-2 pb-1 min-w-max px-2 md:px-0 items-center">
+                        <!-- Los botones se generarán automáticamente aquí con JavaScript -->
+                    </div>
+                </div>
+
             </div>
         </div>
     </header>
@@ -226,16 +237,19 @@
                     
                     <!-- PANEL DE CONTROLES: Tamaño de letra y Copiar -->
                     <div class="mb-6 flex flex-wrap gap-3 justify-between items-center bg-gray-50 dark:bg-gray-800 p-2 md:p-3 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm transition-colors duration-300">
-                        <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-2 md:gap-3">
                             <span class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider ml-1 hidden sm:inline-block transition-colors duration-300">Letra:</span>
-                            <button onclick="changeFontSize(-2)" class="w-8 h-8 bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg shadow-sm border border-gray-300 dark:border-gray-600 flex items-center justify-center transition-colors focus:ring-2 focus:ring-red-200 dark:focus:ring-red-900 font-bold" title="Reducir tamaño de letra">
+                            <!-- Botón A- (Más grande: w-11 h-11 en móvil, w-12 h-12 en PC) -->
+                            <button onclick="changeFontSize(-2)" class="w-11 h-11 md:w-12 md:h-12 bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg shadow-sm border border-gray-300 dark:border-gray-600 flex items-center justify-center transition-colors focus:ring-2 focus:ring-red-200 dark:focus:ring-red-900 font-bold text-lg" title="Reducir tamaño de letra">
                                 A-
                             </button>
-                            <button onclick="changeFontSize(2)" class="w-8 h-8 bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg shadow-sm border border-gray-300 dark:border-gray-600 flex items-center justify-center transition-colors focus:ring-2 focus:ring-red-200 dark:focus:ring-red-900 font-bold text-lg" title="Aumentar tamaño de letra">
+                            <!-- Botón A+ (Más grande: w-11 h-11 en móvil, w-12 h-12 en PC) -->
+                            <button onclick="changeFontSize(2)" class="w-11 h-11 md:w-12 md:h-12 bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg shadow-sm border border-gray-300 dark:border-gray-600 flex items-center justify-center transition-colors focus:ring-2 focus:ring-red-200 dark:focus:ring-red-900 font-bold text-xl" title="Aumentar tamaño de letra">
                                 A+
                             </button>
                         </div>
-                        <button onclick="copyLyrics()" class="text-xs md:text-sm font-semibold bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-black dark:text-gray-100 px-3 py-1.5 md:py-2 rounded transition-colors border border-gray-300 dark:border-gray-600 flex items-center shadow-sm whitespace-nowrap">
+                        <!-- Botón Copiar Letra (Ajustado para mantener la proporción) -->
+                        <button onclick="copyLyrics()" class="text-sm md:text-base font-semibold bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-black dark:text-gray-100 px-4 py-2.5 md:py-3 rounded-lg transition-colors border border-gray-300 dark:border-gray-600 flex items-center shadow-sm whitespace-nowrap">
                             <i class="fa-regular fa-copy mr-1.5 text-red-600 dark:text-red-400"></i> Copiar Letra
                         </button>
                     </div>
@@ -271,6 +285,12 @@
                 lyrics: "La-lalalaia-lalalaia-lalalaia...(x2)\n\n¡Canten con alegría\na Dios nuestro defensor.\nToquen las trompetas\npara la fiesta del Señor.\nCanten con alegría\ny una profunda gratitud\nal Dios que puede darles\n/// la eterna salvación ///\n\nLa lalalaia...\n\nEscuchen al Eterno\nsu voz es poderosa.\nAnuncien a todo el mundo,\n/// ¡cómo está viva su gloria! ///\n\nPreparen el camino\n- Para el Rey de Israel\nPreparen el camino\n- Para su siervo fiel\n(x2)\n\nLa lalalaia....\n\nFeliz es aquel\n- que escucha a Dios\nFeliz es aquel\n- que se humilla ante el Señor\nFeliz es aquel\n- que anuncia a Dios\nFeliz es aquel\nque sus pecados Dios perdona,\nsus pecados Dios perdona,\nsus pecados Dios perdona.\n\nLa lalalaia..."
             },
             {
+                id: 3,
+                title: "3. Dame Amor",
+                artist: "Alabanza",
+                lyrics: "Dame amor, Oh Señor\npara que siga amando.\nDame amor Oh Señor Amén, Amén.\nDame amor, Oh Señor\npara que siga amando\nsiga amando hasta el anochecer.\n\nCORO:\nY cantaré Hosana, sí, Hosana,\nsí Hosana al Señor mi Rey.\nY cantaré Hosana, sí Hosana\nSí Hosana al Señor.\n\nDame lo que decir\npara que siga predicando\ndame lo que decir Amén, Amén.\nDame lo que decir\npara que siga predicando,\npredicando hasta el amanecer.\n\nCORO\n\nDame fuego, Señor\npara que siga ardiendo\nDame fuego, Señor Amén, Amén.\nDame fuego Señor\npara que siga ardiendo,\nsiga ardiendo hasta el anochecer.\n\nCORO\n\nDame agua Señor\npara que siga bautizando,\nDame agua, Señor Amén, Amén.\nDame agua Señor\npara que siga bautizando,\nbautizando hasta el anochecer.\n\nCORO"
+            },
+            {
                 id: 4,
                 title: "4. Nada en mi camino",
                 artist: "Alabanza",
@@ -301,6 +321,12 @@
                 lyrics: "CORO:\nGloria, gloria, Aleluya\nya dejé mi carga atrás. (x2)\n\nSoy feliz, muy feliz,\nya dejé mi carga atrás.\n\nCORO\n\nVoy a ver a Jesús,\nya dejé mi carga atrás.\n\nCORO\n\nVoy a estar en un banquete,\nya dejé mi carga atrás.\n\nCORO"
             },
             {
+                id: 9,
+                title: "9. ¿De qué lado vives tú?",
+                artist: "Alabanza",
+                lyrics: "Solista:\n-Di ¿de qué lado vives tú?\nTodos:\n-Yo vivo al lado de Jesús.\n(x2)\n// Yo vivo (x4)\nyo vivo al lado de Jesús //\n\nSolista:\n- Di ¿de qué lado cantas tú?\nTodos:\n- Yo canto al lado de Jesús\n(x2).\n// Yo canto (x4)\nYo canto al lado de Jesús //\n\nAmas...\nSirves...\nOras...\nLuchas..."
+            },
+            {
                 id: 11,
                 title: "11. El Dios Eterno",
                 artist: "Alabanza",
@@ -323,6 +349,24 @@
                 title: "17. Aleluya",
                 artist: "Alabanza",
                 lyrics: "Cantamos con el corazón\nal mundo entero sin temor,\ndel Señor y su verdad,\nlas naciones oirán:\n\nCORO:\nA____le___lu___ya (H)\nAleluya  alelu alelu leeluya (M)\n\nCruces, sangre y el perdón,\nel mundo tiembla  de  temor,\nel juicio y la bondad de Dios,\nveremos pronto al Salvador.\n\nCORO\n\nDios es mi razón de ser,\nsirviente soy, Él es el Rey,\ntodo honor y vida y paz,\nviviendo en su iglesia actual.\n\nCORO\n\nÉl es justo, Él es amor,\nbusquemos juntos al Señor,\nsoberano y justo es Él,\nsu Palabra siempre es fiel.\n\nCORO\n\nLa vida muy corta es\nno pierdas la  oportunidad.\nBuscar a Dios de corazón\nConfiando El te cambiará."
+            },
+            {
+                id: 22,
+                title: "22. Señor Poderoso",
+                artist: "Alabanza",
+                lyrics: "Señor Poderoso\nQuiero cantar, cantar, cantarte a ti\n(x2)\n\nPredicar, bautizar,\ndedicar cada día a ti (x2)\n\nSeñor Poderoso... (x2)\nQuiero orar...\n\nQuiero amar...\n\nQuiero vivir...\n\nQuiero servir..."
+            },
+            {
+                id: 23,
+                title: "23. Qué Bueno es Alabar",
+                artist: "Alabanza",
+                lyrics: "(Salmo 92)\n\n¡Qué bueno es alabar al Señor\ny cantar Salmos a su nombre!\n(x2)\n\nAnunciar por la mañana\nsu misericordia\ny su fidelidad cada noche.\n(x2)"
+            },
+            {
+                id: 27,
+                title: "27. Caminando con Dios",
+                artist: "Alabanza",
+                lyrics: "Yo voy a andar con Cristo\ntodo el día,\ndonde quiera que vaya (x3)\n\nCORO:\nEn el Trabajo, en Casa,\nen la Escuela, en la Calle,\nen el Camino, solito,\nahora y siempre.\n\nYo voy a predicar la palabra\ntodo el día,\ndonde quiera que vaya (x3)\n\nYo voy amar a las personas\ntodo el día,\ndonde quiera que vaya (x3)\n\nYo voy a hacer discípulos\ntodo el día,\ndonde quiera que vaya (x3)"
             },
             {
                 id: 30,
@@ -353,14 +397,51 @@
                 title: "39. Te alabaré",
                 artist: "Alabanza",
                 lyrics: "Eres Tú la única razón\nde mi adoración, oh Jesús.\nEres Tú la esperanza que\nanhelé tener, oh Jesús.\nConfié en Ti me has ayudado,\ntu salvación me has regalado.\n\nHoy hay gozo en mi corazón,\ncon mi canto te alabaré.\n\nCORO\nTe alabaré, te glorificaré,\nte alabaré, mi buen Jesús. (x2)\n\nEn todo tiempo te adoraré,\nen todo tiempo te alabaré."
+            },
+            {
+                id: 47,
+                title: "47. Con mi Dios",
+                artist: "Alabanza",
+                lyrics: "¡Con mi Dios yo tengo la victoria,\ncon mi Dios ejércitos derribaré!\n(x2)\n\nEl adiestra mis manos\npara la batalla,\nTodo lo puedo en Cristo\nque me fortalece,\n\nÉl es escudo, la roca mía,\nÉl es la fuerza de mi salvación,\nmi alto refugio, mi fortaleza,\nÉl es, mi libertador."
+            },
+            {
+                id: 68,
+                title: "68. Quiero Alabarte",
+                artist: "Alabanza",
+                lyrics: "CORO:\nQuiero alabarte\nmás y más aún (2x)\nBuscar tu voluntad,\ntu gracia conocer,\nquiero alabarte (2x)\n\nLas aves del cielo\ncantan para ti.\nLas bestias del campo\nreflejan tu poder.\nQuiero yo cantar.\nQuiero levantar mis manos a ti.\n\nCORO"
+            },
+            {
+                id: 89,
+                title: "89. El Señor es mi pastor",
+                artist: "Alabanza",
+                lyrics: "(Salmo 23)\n\nEl Señor es mi pastor\nnada me faltará\nEL Señor es mi pastor\nen pastos delicados\nÉl me hará descansar.\n\nJunto a aguas de reposo\nme pastoreará\nconfortará mi alma\nme guiará por sendas de justicia\npor amor de su nombre."
+            },
+            {
+                id: 101,
+                title: "101. SALMO 1",
+                artist: "Salmo",
+                lyrics: "1 Dichoso el hombre que no sigue\nel consejo de los malvados,\nni se detiene en la senda de los pecadores\nni cultiva la amistad de los blasfemos,\n\n2 sino que en la ley del Señor se deleita,\ny día y noche medita en ella.\n\n3 Es como el árbol plantado\na la orilla de un río\nque, cuando llega su tiempo,\nda fruto y sus hojas jamás se marchitan.\n\n¡Todo cuanto hace prospera!\n4 En cambio, los malvados son\ncomo paja arrastrada por el viento.\n\n5 Por eso no se sostendrán\nlos malvados en el juicio,\nni los pecadores en la\nasamblea de los justos.\n\n6 Porque el Señor cuida el camino de los justos,\nmas la senda de los malos lleva a la perdición."
+            },
+            {
+                id: 104,
+                title: "104. SALMO 4",
+                artist: "Salmo",
+                lyrics: "Al director musical. Acompáñese con instrumentos de cuerda. Salmo de David\n\n1 Responde a mi clamor, Dios mío y defensor mío.\nDame alivio cuando esté angustiado,\napiádate de mí y escucha mi oración.\n\n2 Y ustedes, señores, ¿hasta cuándo cambiarán\nmi gloria en vergüenza? ¿Hasta cuándo amarán ídolos vanos\ne irán en pos de lo ilusorio?\n\n3 Sepan que el Señor honra al que le es fiel;\nel Señor me escucha cuando lo llamo.\n7 Tú has hecho que mi corazón rebose de alegría,\nalegría mayor que la que tienen\nlos que disfrutan de trigo y vino en abundancia.\n\n4 Si se enojan, no pequen;\nen la quietud del descanso nocturno examínense el corazón.\n5 Ofrezcan sacrificios de justicia y confíen en el Señor.\n\n6 Muchos son los que dicen:\n«¿Quién puede mostrarnos algún bien?»\n¡Haz, Señor, que sobre nosotros brille la luz de tu rostro!\n\nCORO\n\n8 En paz me acuesto y me duermo,\nporque sólo tú, Señor, me haces vivir confiado."
+            },
+            {
+                id: 115,
+                title: "115. SALMO 15",
+                artist: "Salmo",
+                lyrics: "Salmo de David\n\n[ROJO]1 ¿Quién, Señor, puede habitar en tu santuario?\n¿Quién puede vivir en tu santo monte?[/ROJO]\n\n2 Sólo el de conducta intachable,\nque practica la justicia y\nde corazón dice la verdad; CORO\n\n3 que no calumnia con la lengua,\nque no le hace mal a su prójimo\nni le acarrea desgracias a su vecino; CORO\n\n4 que desprecia al que Dios reprueba,\npero honra al que teme al Señor;\nque cumple lo prometido aunque salga\nperjudicado; CORO\n\n5 que presta dinero sin ánimo de lucro,\ny no acepta sobornos que afecten al inocente.\nEl que así actúa no caerá jamás. CORO"
             }
         ];
 
         // --- BASE DE DATOS COMBINADA ---
         let database = [...cancionesBase];
 
-        // --- CONFIGURACIÓN DE TAMAÑO DE LETRA ---
+        // --- CONFIGURACIÓN DE TAMAÑO DE LETRA Y FILTROS ---
         let currentFontSize = parseInt(localStorage.getItem('cancionero_fontSize')) || 18;
+        let activeLetter = null; // Guarda la letra actualmente seleccionada
 
         // Elementos del DOM
         const gridEl = document.getElementById('songs-grid');
@@ -384,6 +465,30 @@
             }
         }
 
+        // Renderizar la barra del alfabeto
+        function renderAlphabet() {
+            const alphabetContainer = document.getElementById('alphabet-container');
+            const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".split('');
+            
+            // Botón 'Todas'
+            let html = `<button onclick="filterByLetter(null)" class="px-4 py-1.5 text-sm font-bold rounded-full transition-all duration-300 flex-shrink-0 ${activeLetter === null ? 'bg-red-600 text-white shadow-md transform scale-105' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:border dark:border-gray-700 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'}">Todas</button>`;
+
+            // Botones A-Z
+            alphabet.forEach(letter => {
+                const isActive = activeLetter === letter;
+                html += `<button onclick="filterByLetter('${letter}')" class="w-9 h-9 flex items-center justify-center text-sm font-bold rounded-full transition-all duration-300 flex-shrink-0 ${isActive ? 'bg-red-600 text-white shadow-md transform scale-110' : 'bg-gray-100 text-gray-600 dark:bg-gray-800 dark:border dark:border-gray-700 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700'}">${letter}</button>`;
+            });
+
+            alphabetContainer.innerHTML = html;
+        }
+
+        // Aplicar filtro al hacer clic en una letra
+        function filterByLetter(letter) {
+            activeLetter = letter;
+            renderAlphabet(); // Actualizamos los colores de los botones
+            renderSongs(document.getElementById('searchInput').value); // Re-filtramos las canciones
+        }
+
         function renderSongs(query = '') {
             if (!query) {
                 searchInput.value = '';
@@ -391,10 +496,29 @@
             }
 
             const filteredSongs = database.filter(song => {
+                // Filtro 1: Por la barra de búsqueda
                 const searchLower = query.toLowerCase();
-                return song.title.toLowerCase().includes(searchLower) || 
-                       song.artist.toLowerCase().includes(searchLower) ||
-                       song.lyrics.toLowerCase().includes(searchLower);
+                const cleanLyricsForSearch = song.lyrics.replace(/\[\/?ROJO\]/gi, '');
+                const matchesSearch = song.title.toLowerCase().includes(searchLower) || 
+                                      song.artist.toLowerCase().includes(searchLower) ||
+                                      cleanLyricsForSearch.toLowerCase().includes(searchLower);
+
+                // Filtro 2: Por letra (A-Z), ignorando el número del inicio y acentos
+                let matchesLetter = true;
+                if (activeLetter) {
+                    // Quitamos acentos y sacamos la primera letra del abecedario
+                    const normalizedTitle = song.title.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+                    const firstLetterMatch = normalizedTitle.match(/[a-zA-Z]/);
+                    
+                    if (firstLetterMatch) {
+                        matchesLetter = firstLetterMatch[0].toUpperCase() === activeLetter;
+                    } else {
+                        matchesLetter = false;
+                    }
+                }
+
+                // La canción debe cumplir ambos filtros
+                return matchesSearch && matchesLetter;
             });
 
             // Siempre ordena las canciones por su 'id' de menor a mayor.
@@ -411,7 +535,8 @@
 
         // Diseño de la tarjeta de canción adaptada al Modo Oscuro
         function createSongCard(song) {
-            const preview = song.lyrics.substring(0, 60).replace(/\n/g, ' ') + '...';
+            const cleanLyrics = song.lyrics.replace(/\[\/?ROJO\]/gi, '');
+            const preview = cleanLyrics.substring(0, 60).replace(/\n/g, ' ') + '...';
             
             return `
                 <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-red-600 dark:hover:border-red-500 overflow-hidden transition-all duration-300 hover:shadow-xl hover:shadow-red-600/10 flex flex-col group cursor-pointer" onclick="openViewModal(${song.id})">
@@ -467,8 +592,10 @@
             document.getElementById('view-title').textContent = song.title;
             document.getElementById('view-artist').innerHTML = `<i class="fa-solid fa-user mr-2 text-black dark:text-gray-400"></i> ${song.artist}`;
             
-            // Resaltar la palabra CORO
-            const formattedLyrics = song.lyrics.replace(/\b(CORO:?)\b/gi, '<span class="text-red-600 dark:text-red-500 font-bold">$1</span>');
+            // Resaltar la palabra CORO y los bloques marcados con [ROJO]
+            let formattedLyrics = song.lyrics.replace(/\b(CORO:?)\b/gi, '<span class="text-red-600 dark:text-red-500 font-bold">$1</span>');
+            formattedLyrics = formattedLyrics.replace(/\[ROJO\]([\s\S]*?)\[\/ROJO\]/gi, '<span class="text-red-600 dark:text-red-500 italic">$1</span>');
+            
             document.getElementById('view-lyrics').innerHTML = formattedLyrics;
 
             applyFontSize();
@@ -529,6 +656,7 @@
         }
 
         window.onload = () => {
+            renderAlphabet(); // Dibujamos el alfabeto al cargar la página
             renderSongs();
         };
 

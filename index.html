@@ -214,9 +214,56 @@
 
     <!-- Modal: Ver Canción (Lectura) -->
     <div id="view-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black/80 dark:bg-black/90 backdrop-blur-md p-4 transition-colors duration-300">
-        <div class="bg-white dark:bg-gray-800 rounded-2xl w-full max-w-3xl shadow-2xl border border-gray-200 dark:border-gray-700 modal-enter flex flex-col h-[90vh] w-full transition-colors duration-300">
-            <!-- Cabecera de la canción -->
-            <div class="bg-gray-50 dark:bg-gray-900/50 p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-start rounded-t-2xl relative overflow-hidden transition-colors duration-300">
+        <div class="bg-white dark:bg-gray-800 rounded-2xl w-full max-w-3xl shadow-2xl border border-gray-200 dark:border-gray-700 modal-enter flex flex-col h-[90vh] w-full transition-colors duration-300 relative overflow-hidden">
+            
+            <!-- MARCA DE AGUA FIJA (Pentagramas y Notas Musicales) -->
+            <div class="absolute inset-0 z-0 flex items-center justify-center pointer-events-none opacity-[0.04] dark:opacity-[0.06] mt-24 md:mt-32">
+                <svg viewBox="0 0 800 600" class="w-full h-auto min-w-[600px] text-black dark:text-white" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                    <!-- Pentagrama Superior -->
+                    <path d="M-50 150 Q 200 50 850 150" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <path d="M-50 170 Q 200 70 850 170" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <path d="M-50 190 Q 200 90 850 190" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <path d="M-50 210 Q 200 110 850 210" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <path d="M-50 230 Q 200 130 850 230" fill="none" stroke="currentColor" stroke-width="2"/>
+
+                    <!-- Pentagrama Inferior -->
+                    <path d="M-50 400 Q 600 500 850 400" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <path d="M-50 420 Q 600 520 850 420" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <path d="M-50 440 Q 600 540 850 440" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <path d="M-50 460 Q 600 560 850 460" fill="none" stroke="currentColor" stroke-width="2"/>
+                    <path d="M-50 480 Q 600 580 850 480" fill="none" stroke="currentColor" stroke-width="2"/>
+
+                    <!-- Claves de Sol -->
+                    <path d="M 80 180 C 60 180 50 140 80 110 C 120 70 140 0 90 20 C 40 40 30 120 70 170 C 110 220 130 300 70 320 C 20 340 0 280 40 260 C 70 240 80 270 70 280" fill="none" stroke="currentColor" stroke-width="4"/>
+                    <path d="M 700 450 C 680 450 670 410 700 380 C 740 340 760 270 710 290 C 660 310 650 390 690 440 C 730 490 750 570 690 590 C 640 610 620 550 660 530 C 690 510 700 540 690 550" fill="none" stroke="currentColor" stroke-width="4"/>
+
+                    <!-- Notas Musicales -->
+                    <ellipse cx="250" cy="150" rx="14" ry="10" transform="rotate(-20 250 150)"/>
+                    <path d="M 262 150 L 262 40" stroke="currentColor" stroke-width="3"/>
+                    <path d="M 262 40 C 282 40 292 60 292 80 C 292 50 272 30 262 40" fill="currentColor"/>
+
+                    <ellipse cx="400" cy="190" rx="14" ry="10" transform="rotate(-20 400 190)"/>
+                    <path d="M 412 190 L 412 80" stroke="currentColor" stroke-width="3"/>
+
+                    <ellipse cx="550" cy="110" rx="14" ry="10" transform="rotate(-20 550 110)"/>
+                    <path d="M 562 110 L 562 0" stroke="currentColor" stroke-width="3"/>
+                    <path d="M 562 0 C 582 0 592 20 592 40 C 592 10 572 -10 562 0" fill="currentColor"/>
+
+                    <ellipse cx="150" cy="460" rx="14" ry="10" transform="rotate(-20 150 460)"/>
+                    <path d="M 162 460 L 162 350" stroke="currentColor" stroke-width="3"/>
+                    <path d="M 162 350 C 182 350 192 370 192 390 C 192 360 172 340 162 350" fill="currentColor"/>
+
+                    <ellipse cx="350" cy="420" rx="14" ry="10" transform="rotate(-20 350 420)"/>
+                    <path d="M 362 420 L 362 310" stroke="currentColor" stroke-width="3"/>
+
+                    <ellipse cx="500" cy="480" rx="14" ry="10" transform="rotate(-20 500 480)"/>
+                    <path d="M 512 480 L 512 370" stroke="currentColor" stroke-width="3"/>
+                    <path d="M 512 370 C 532 370 542 390 542 410 C 542 380 522 360 512 370" fill="currentColor"/>
+                </svg>
+            </div>
+
+            <!-- Cabecera de la canción (Fondo Sólido para no mezclar con la marca de agua) -->
+            <div class="bg-gray-50 dark:bg-gray-900 p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-start rounded-t-2xl relative overflow-hidden transition-colors duration-300 z-10">
                 <div class="absolute top-0 right-0 opacity-5 dark:opacity-10 pointer-events-none">
                     <i class="fa-solid fa-cross text-9xl transform translate-x-1/4 -translate-y-1/4 text-black dark:text-white"></i>
                 </div>
@@ -231,24 +278,24 @@
                 </button>
             </div>
             
-            <!-- Cuerpo (Letra) -->
-            <div class="p-5 md:p-8 flex-1 overflow-y-auto bg-white dark:bg-gray-900 transition-colors duration-300">
+            <!-- Cuerpo (Letra) - Ahora con fondo Transparente para dejar ver el arte -->
+            <div class="p-5 md:p-8 flex-1 overflow-y-auto bg-transparent relative z-10 transition-colors duration-300">
                 <div class="max-w-2xl mx-auto">
                     
                     <!-- PANEL DE CONTROLES: Tamaño de letra y Copiar -->
                     <div class="mb-6 flex flex-wrap gap-3 justify-between items-center bg-gray-50 dark:bg-gray-800 p-2 md:p-3 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm transition-colors duration-300">
                         <div class="flex items-center gap-2 md:gap-3">
                             <span class="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider ml-1 hidden sm:inline-block transition-colors duration-300">Letra:</span>
-                            <!-- Botón A- (Más grande: w-11 h-11 en móvil, w-12 h-12 en PC) -->
+                            <!-- Botón A- -->
                             <button onclick="changeFontSize(-2)" class="w-11 h-11 md:w-12 md:h-12 bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg shadow-sm border border-gray-300 dark:border-gray-600 flex items-center justify-center transition-colors focus:ring-2 focus:ring-red-200 dark:focus:ring-red-900 font-bold text-lg" title="Reducir tamaño de letra">
                                 A-
                             </button>
-                            <!-- Botón A+ (Más grande: w-11 h-11 en móvil, w-12 h-12 en PC) -->
+                            <!-- Botón A+ -->
                             <button onclick="changeFontSize(2)" class="w-11 h-11 md:w-12 md:h-12 bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 rounded-lg shadow-sm border border-gray-300 dark:border-gray-600 flex items-center justify-center transition-colors focus:ring-2 focus:ring-red-200 dark:focus:ring-red-900 font-bold text-xl" title="Aumentar tamaño de letra">
                                 A+
                             </button>
                         </div>
-                        <!-- Botón Copiar Letra (Ajustado para mantener la proporción) -->
+                        <!-- Botón Copiar Letra -->
                         <button onclick="copyLyrics()" class="text-sm md:text-base font-semibold bg-white dark:bg-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 text-black dark:text-gray-100 px-4 py-2.5 md:py-3 rounded-lg transition-colors border border-gray-300 dark:border-gray-600 flex items-center shadow-sm whitespace-nowrap">
                             <i class="fa-regular fa-copy mr-1.5 text-red-600 dark:text-red-400"></i> Copiar Letra
                         </button>
@@ -283,6 +330,12 @@
                 title: "1. Canción de Fiesta",
                 artist: "Alabanza",
                 lyrics: "La-lalalaia-lalalaia-lalalaia...(x2)\n\n¡Canten con alegría\na Dios nuestro defensor.\nToquen las trompetas\npara la fiesta del Señor.\nCanten con alegría\ny una profunda gratitud\nal Dios que puede darles\n/// la eterna salvación ///\n\nLa lalalaia...\n\nEscuchen al Eterno\nsu voz es poderosa.\nAnuncien a todo el mundo,\n/// ¡cómo está viva su gloria! ///\n\nPreparen el camino\n- Para el Rey de Israel\nPreparen el camino\n- Para su siervo fiel\n(x2)\n\nLa lalalaia....\n\nFeliz es aquel\n- que escucha a Dios\nFeliz es aquel\n- que se humilla ante el Señor\nFeliz es aquel\n- que anuncia a Dios\nFeliz es aquel\nque sus pecados Dios perdona,\nsus pecados Dios perdona,\nsus pecados Dios perdona.\n\nLa lalalaia..."
+            },
+            {
+                id: 2,
+                title: "2. Dios de los Ejércitos",
+                artist: "Alabanza",
+                lyrics: "Es el Dios de los ejércitos\nen quien yo confiaré,\ny con címbalos de gozo\nal Señor ensalzaré.\nÉl despide los relámpagos\nmas nunca temeré.\nÉl es mi protector.\n\nCORO:\nGloria, gloria aleluya (x3)\nA Cristo doy honor.\n\nCon ejércitos no gana\nsus victorias el Señor,\nni con fuerza lucha en contra\nde Satán el tentador.\nLa potencia del Espíritu\nha dicho el Dios de amor\nes lo que vencerá.\n\nCORO\n\nEn Belén de Palestina\nel Señor Jesús nació,\ny después de treinta años\nen la cruenta cruz murió.\nPero vive para siempre\npues la tumba ya venció\nsu nombre alabaré.\n\nCORO"
             },
             {
                 id: 3,
@@ -327,10 +380,34 @@
                 lyrics: "Solista:\n-Di ¿de qué lado vives tú?\nTodos:\n-Yo vivo al lado de Jesús.\n(x2)\n// Yo vivo (x4)\nyo vivo al lado de Jesús //\n\nSolista:\n- Di ¿de qué lado cantas tú?\nTodos:\n- Yo canto al lado de Jesús\n(x2).\n// Yo canto (x4)\nYo canto al lado de Jesús //\n\nAmas...\nSirves...\nOras...\nLuchas..."
             },
             {
+                id: 10,
+                title: "10. Muéstrame",
+                artist: "Alabanza",
+                lyrics: "Muéstrame un propósito mayor\nque transforme los corazones...\n\nCORO:\nCon vidas puras\ny dedicadas\nA nuestro Dios\ny creador.\n(x2)\n\nHombres cuyos sueños\nson más altos\nde lo que puedas imaginar,\ncon un ejemplo en sus vidas\nque como luz viene a brillar.\n\nCORO"
+            },
+            {
                 id: 11,
                 title: "11. El Dios Eterno",
                 artist: "Alabanza",
                 lyrics: "CORO:\nEl Dios Eterno es poderoso,\nno ha perdido su fuerza,\nel Dios eterno está listo a salvar.\nIluminó mi camino,\nya cambió mi destino,\nel Dios Eterno está listo a salvar.\n(x2)\n\nEl Dios que vence toda barrera\ncon amor, con fe y perdón.\nUna vida cierta y verdadera,\nsoy parte de la familia\ny yo voy con gratitud.\n\nCORO"
+            },
+            {
+                id: 12,
+                title: "12. Soy un Soldado",
+                artist: "Alabanza",
+                lyrics: "CORO:\nYo soy un soldado de mi Dios\nluchando en el campo de batalla\n(x3)\nTrayendo almas para Cristo\ny cumpliendo mi misión.\n\nYo quiero amar, orar, gritar,\nluchando en el campo de batalla (x3)\nTrayendo almas para Cristo\ny cumpliendo mi misión.\n\nCORO\n\nYo llevo una espada en mis manos\ny justicia en el corazón (x3)\nTrayendo almas para Cristo\ny cumpliendo mi misión.\n\nCORO\n\nY cuando la muerte llegue a mí,\nque sea en el campo de batalla (x3)\nTrayendo almas para Cristo\ny cumpliendo mi misión.\n\nCORO"
+            },
+            {
+                id: 13,
+                title: "13. Yo sé",
+                artist: "Alabanza",
+                lyrics: "Yo sé que existe un redentor\ny se entregó por mí.\nOfrece vida y salvación\na quien para Él quiere vivir.\n\nCORO:\nYo sé, yo sé que existe un redentor.\nYo sé, yo sé que Él es mi Salvador.\nYo sé, yo sé que Cristo vive hoy.\n\nYo sé que mi Señor murió\npor darnos libertad.\nYo sé mis culpas Él cargó\npues en la cruz lo demostró.\n\nCORO\n\nYo sé que algún día vendrá\nasí nos prometió.\nYo tengo que servirle fiel\nvivir como Él lo demandó.\n\nCORO"
+            },
+            {
+                id: 14,
+                title: "14. Familia de Dios",
+                artist: "Alabanza",
+                lyrics: "Hoy como es bueno\nvivimos unidos como hermanos.\nHoy como es bueno\nestar en la familia de Dios. (x2)\n\nPorque fuimos libertados\nestamos siempre en el propósito\navanzando en la batalla\ncon gratitud. (2x)\n\nCon gratitud (x4)"
             },
             {
                 id: 15,
@@ -351,6 +428,30 @@
                 lyrics: "Cantamos con el corazón\nal mundo entero sin temor,\ndel Señor y su verdad,\nlas naciones oirán:\n\nCORO:\nA____le___lu___ya (H)\nAleluya  alelu alelu leeluya (M)\n\nCruces, sangre y el perdón,\nel mundo tiembla  de  temor,\nel juicio y la bondad de Dios,\nveremos pronto al Salvador.\n\nCORO\n\nDios es mi razón de ser,\nsirviente soy, Él es el Rey,\ntodo honor y vida y paz,\nviviendo en su iglesia actual.\n\nCORO\n\nÉl es justo, Él es amor,\nbusquemos juntos al Señor,\nsoberano y justo es Él,\nsu Palabra siempre es fiel.\n\nCORO\n\nLa vida muy corta es\nno pierdas la  oportunidad.\nBuscar a Dios de corazón\nConfiando El te cambiará."
             },
             {
+                id: 18,
+                title: "18. Sofonías",
+                artist: "Alabanza",
+                lyrics: "Oí a Dios cantar para mí\n-Y salvar cada nación-\nOí a Dios cantar para mí\n-Y vencer la tentación-\nOí a Dios cantar para mí\n-Es por causa de Jesús,\nes por causa de Jesús-\n\nCORO:\n...a Dios cantar para mí (x2)\n\nSi Dios canta y se alegra\ny yo amo su canción,\nen su canto está diciendo:\ndemos nuestro corazón.\n\nSean rectos, canten fuerte,\nSatanás se apartará.\nUniremos nuestras voces\ny este canto escuchará.\n\nCORO\n\nLa unidad del movimiento\nla verán en nuestro amor,\nCristo es quien nos envía\na salvar cada nación.\n\nNos critican, nos persiguen,\nasí crece nuestra unión,\nla batalla es celeste,\nla victoria es de Dios.\n\nCORO"
+            },
+            {
+                id: 19,
+                title: "19. Nuestro Dios es Rey",
+                artist: "Alabanza",
+                lyrics: "Contaré en mis canciones\nque el Señor es mi pastor.\nA través de las tormentas me guiará.\nNi reyes, ni coronas\nlograrán permanecer.\nEternamente y para siempre.\n¡Nuestro Dios es rey!\n\nSu cayado me da fuerza y\nme sostiene al caminar.\nCada rumbo, cada paso en mi vivir.\nCon sus siervos, mis amigos,\nen su casa habitaré.\nDonde hay paz y esperanza\n¡Nuestro Dios es Rey!\n\nH: Y a las aguas purificadoras\notros llegarán.\nM: Aguas yo compartiré\nH: Su palabra en otras almas\nsembraré.\nM: Y yo sé que un ángel\nH: Y los ángeles del cielo\na mi lado lucharán,\nM: Lucharán por mí\nH: hasta el último aliento de mi fe.\n\nAunque muchos se opongan\ny desprecien a mi Dios,\nme levantaré sin miedo a combatir.\nSin tregua, sin descanso,\ncon su pueblo gritaré,\nen cada oportunidad.\n¡Nuestro Dios es Rey!\n\nH: Ni gigantes ni murallas hay\nque me puedan detener\nM: Murallas no detendrán\nH: mientras haya un corazón\npor libertar.\nM: la libertad de un corazón\nH: Cada pueblo, cada corazón\naún por conquistar,\nM: la victoria es de Dios.\nH: la victoria es para el reino\nde mi Dios.\n\nH: Rey. Nuestro Dios es Rey.\nM: Nuestro Dios es Rey.\n(4x)\n\nNuestro Dios es, nuestro Dios es\nNuestro Dios es Rey."
+            },
+            {
+                id: 20,
+                title: "20. Aquel Día Increíble",
+                artist: "Alabanza",
+                lyrics: "Cierto día el Dios Eterno\nme llamó, me llamó,\npara su Reino Eterno.\nUna noche, en la oscuridad\nuna luz brilló, una luz\nbrilló en mi corazón.\n\nCORO:\nFue en aquel día increíble,\nla esperanza en mi vida brotó. (x3)\nCuando el perdón me tocó. (x2)\n\nUn discípulo verdadero\nme amó, me amó\ny me convirtió en guerrero.\nPara muchos mi buena vida\nacabó, acabó\npero en verdad comenzó.\n\nCORO"
+            },
+            {
+                id: 21,
+                title: "21. Salmo 100",
+                artist: "Alabanza",
+                lyrics: "Cantad alegres, sí, cantad a Dios,\nhabitantes de toda la tierra.\nServid a Dios con alegría,\nVeníd a Él con regocijo.\n\nReconoced que Jehová es Dios,\nÉl nos hizo y somos suyos,\npueblo suyo, suyos somos\ny ovejas de su prado.\n\nCon gratitud entrad por sus puertas,\npor sus atrios con alabanza.\nVenid a Él con acción de gracias\nAlabad, bendecíd su nombre.\n\nPorque Jehová, el Señor es bueno,\nPara siempre es su misericordia\nY su fidelidad por todas,\npor todas las generaciones.\n\nAleluya, gloria aleluya (x4)\nMaranatha, Señor ven pronto (x4)"
+            },
+            {
                 id: 22,
                 title: "22. Señor Poderoso",
                 artist: "Alabanza",
@@ -363,10 +464,40 @@
                 lyrics: "(Salmo 92)\n\n¡Qué bueno es alabar al Señor\ny cantar Salmos a su nombre!\n(x2)\n\nAnunciar por la mañana\nsu misericordia\ny su fidelidad cada noche.\n(x2)"
             },
             {
+                id: 24,
+                title: "24. Jericó",
+                artist: "Alabanza",
+                lyrics: "CORO:\nVen con Josué a luchar en Jericó,\nJericó, Jericó.\nVen con Josué a luchar en Jericó\ny las murallas caerán.\n\nSuban los montes sin parar,\nque el Señor va a pelear,\ncerquen los muros para mí,\npues Jericó llegó a su fin.\n\nCORO\n\nLas trompetas sonarán,\ncielo y tierra temblarán,\ncerquen los muros para mí,\npues Jericó llegó a su fin.\n\nCORO"
+            },
+            {
+                id: 25,
+                title: "25. Busco a Dios",
+                artist: "Alabanza",
+                lyrics: "Busco a la bella mañana.\nBusco el suave atardecer.\nBusco a la orilla de mi cama\nde rodillas a mi Dios quiero ver (x2)\n\nCORO:\nLas promesas que un día leí\nhoy las quiero vivir.\nGuíame Señor hacia ti,\ncontigo quiero vivir (x2)\n\nBusco apartarme del pecado.\nBusco agradarle a Él.\nBusco mirarle a los ojos\ny ser discípulo fiel (x2)\n\nCORO"
+            },
+            {
+                id: 26,
+                title: "26. El Triunfo del Cordero",
+                artist: "Alabanza",
+                lyrics: "H: Pueblos,\noyen el triunfo del cordero (x5)\nPasado ni futuro,\nhan visto su poder.\n\nM: Oye, oh Israel,\nel Señor es Rey\nPadre, hijo y espíritu,\nel Señor es uno, Dios es uno.\n\nCORO\nH: Nada en cielo y creación\npuede vencer su amor,\nSeñor, mi Dios.\nEn medio del dolor\nalzaré mis ojos,\npara ver las obras de su mano.\n\nM: Nada separa de su amor,\nnada, mi Dios.\nMiro al cielo y veo obras,\nsu mano.\n\nM: Cante toda creación,\nÉl resucitó.\nTrajo salvación\ny el reino de Dios.\n\nM: Compró mi libertad,\nalaben al Rey.\n¿Dónde estás oh muerte?\n¿y tu aguijón?\n\nM: ¿Quién me condenará?\nsoy justo por Él.\nMás que vencedor\ny Él me ve de pie."
+            },
+            {
                 id: 27,
                 title: "27. Caminando con Dios",
                 artist: "Alabanza",
                 lyrics: "Yo voy a andar con Cristo\ntodo el día,\ndonde quiera que vaya (x3)\n\nCORO:\nEn el Trabajo, en Casa,\nen la Escuela, en la Calle,\nen el Camino, solito,\nahora y siempre.\n\nYo voy a predicar la palabra\ntodo el día,\ndonde quiera que vaya (x3)\n\nYo voy amar a las personas\ntodo el día,\ndonde quiera que vaya (x3)\n\nYo voy a hacer discípulos\ntodo el día,\ndonde quiera que vaya (x3)"
+            },
+            {
+                id: 28,
+                title: "28. Gozad en la Ley del Señor",
+                artist: "Alabanza",
+                lyrics: "(Salmo 1)\n\nCORO:\nGozad,\ngozad en la ley del Señor (x2)\nMeditad en su ley\nde noche y día (x2)\n\nVenid,\nvenid acompáñanos hoy (x2)\nMi Dios como paja\nal malvado sopla (x2)\n\nFeliz el hombre,\nque como árbol es\nplantado junto al río\ny en temporada fruto da.\n\nCelebremos hoy,\ny celebremos siempre\nCelebremos hoy,\ny celebremos siempre\n\nCORO"
+            },
+            {
+                id: 29,
+                title: "29. Rey de reyes",
+                artist: "Alabanza",
+                lyrics: "Rey de Reyes Señor de señores\ngloria aleluya!\n\nCristo príncipe de paz\ngloria aleluya!"
             },
             {
                 id: 30,
@@ -381,10 +512,34 @@
                 lyrics: "H: Oh, oh, oh...\nM: Jesucristo me enseñó a cantar.\nJesucristo me enseñó a orar.\nJesucristo me enseñó a sonreír.\nY El trajo luz a mi caminar.\n\nH: Oh, oh, oh...\nM: Jesucristo quitó mi pensar.\nJesucristo me enseña a amar.\nY Él promete que me tomará.\nMi Dios me lleva de nuevo al hogar.\n\nH: Viviendo me dio fatiga y dolor.\nM: Sufriendo mató en mí todo amor.\nH: Mi andar..\nM: era a cualquier lugar.\nH: Mi placer...\nM: Llevó a Jesús a morir.\n\nSu perdón brilló en mi corazón,\nsu amor me llena de gratitud.\nEstando en Él,\nseguro, fuerte ¡Señor!\nMi Dios me lleva de nuevo al hogar."
             },
             {
+                id: 32,
+                title: "32. Dime que estarás / Fiesta Celestial",
+                artist: "Alabanza",
+                lyrics: "Dime que estarás en esa tierra (x3)\nDonde voy, donde voy.\nDime que estarás en esa tierra (x3)\nDonde voy.\n\nNada más que amor ...\n\nNada más que dicha ...\n\nTengo un salvador ...\n\nInclúyeme,\nInclúyeme en esta Fiesta Celestial\nInscríbeme,\nPon mi nombre en esa Lista,\nYo cambié,\nYo cambié,\ny es Jesús quien vive en mí,\nSólo quiero estar listo,\nlisto cuando venga Él."
+            },
+            {
+                id: 33,
+                title: "33. Levanta tu casa",
+                artist: "Alabanza",
+                lyrics: "Levanta tu casa sobre la roca (x3)\nY vencerás -¡y vencerás!\nQue no hay poder en este mundo\nque pueda vencer a su Palabra,\nLevanta tu casa sobre la roca\nque es Jesús.\n\nLevanta tu vida...\nLevántate hermano...\nLevántate Iglesia...\nLevántate Lima..."
+            },
+            {
                 id: 34,
                 title: "34. Doy lo Mejor",
                 artist: "Alabanza",
                 lyrics: "CORO:\nDoy lo mejor, doy lo mejor\ndoy lo mejor por ti. (x2)\n\nQuiero cantar (cantar)\nCantar (cantar)\nCantar al Señor por siempre (x2)\n\nCORO\n\nQuiero orar...\nQuiero servir...\nQuiero palmar..."
+            },
+            {
+                id: 35,
+                title: "35. Preparen el camino del Rey",
+                artist: "Alabanza",
+                lyrics: "CORO:\nMi Señor pronto volverá\nPreparen el camino del rey.\nDejen todo listo para ese día,\nPreparen el camino del rey. (x2)\n\nM: Si tú estás dormido es hora de\ndespertar.\nH: Despierta y ve a trabajar.\nM: A la oscuridad la luz va iluminar\nLevántate y ve a trabajar...\n\nCORO\n\nH: El extranjero, el esclavo también\nM: Preparen el camino del Rey\nH: No tenemos tiempo para perder\nPreparen el camino del Rey.\n\nCORO"
+            },
+            {
+                id: 36,
+                title: "36. Moraré en la tierra santa",
+                artist: "Alabanza",
+                lyrics: "Yo moraré en la tierra santa,\nyo moraré en la tierra santa\nde mi Señor ¡Aleluya!\nYo moraré en la tierra santa,\nmoraré en la tierra santa\nde mi Señor ¡Amén!\n\nYo viviré siempre con Cristo (x2)\nmi Salvador, Aleluya...\n\nYo estaré en el gran banquete (x2)\nde mi Señor, Aleluya...\n\nYo gritaré con mis hermanos (x2)\nGloria a Dios, Aleluya...\n\nYo cantaré sin fatigarme (x2)\njunto al Señor, Aleluya..."
             },
             {
                 id: 37,
@@ -393,10 +548,58 @@
                 lyrics: "CORO:\nCanta Amén, Amén,\nRíe Amén, Amén\nGloria para Dios,\nAmén, Amén. (x2)\n\nCuando regrese el Señor,\ncantarás así: Amén, Amén. (x2)"
             },
             {
+                id: 38,
+                title: "38. De Mañana",
+                artist: "Alabanza",
+                lyrics: "Solista:\nY de mañana ¿dónde está\ntu corazón?\n\nTodos:\n¿Dónde está? ¡puesto en Cristo!\n\nCORO:\nAlelu, alelu, alelu-u-ya.\nY estando en Él mi corazón\nseguro estoy,\nporque Él me ama y yo a Él.\n\nY cuando canto...\n\nY cuando oro...\n\nCuando predico..."
+            },
+            {
                 id: 39,
                 title: "39. Te alabaré",
                 artist: "Alabanza",
                 lyrics: "Eres Tú la única razón\nde mi adoración, oh Jesús.\nEres Tú la esperanza que\nanhelé tener, oh Jesús.\nConfié en Ti me has ayudado,\ntu salvación me has regalado.\n\nHoy hay gozo en mi corazón,\ncon mi canto te alabaré.\n\nCORO\nTe alabaré, te glorificaré,\nte alabaré, mi buen Jesús. (x2)\n\nEn todo tiempo te adoraré,\nen todo tiempo te alabaré."
+            },
+            {
+                id: 40,
+                title: "40. Se exalta a nuestro Dios",
+                artist: "Alabanza",
+                lyrics: "Se exalta a nuestro Dios\nentre el júbilo.\nSe exalta a nuestro Dios\nal sonar de las trompetas.\nSe exalta a nuestro Dios\nentre el júbilo.\nCon júbilo gritad a El.\n(con júbilo gritad a El)\n\nCORO:\nCon trompetas hay que celebrar\ny aplaudamos a nuestro Señor.\nSe exalta a nuestro Dios\nSe exalta a nuestro Dios\nSe exalta a nuestro Dios\nOh sí."
+            },
+            {
+                id: 41,
+                title: "41. Clamaré a mi Señor",
+                artist: "Alabanza",
+                lyrics: "(Salmo 18, 3, 46, 49)\n\nClamaré a mi Señor\nPorque Él es digno de loor\nDe mis enemigos me salvará.\n\nJesús vive,\nbendita sea la Roca\nEl Dios de mi salvación\nsea exaltado."
+            },
+            {
+                id: 42,
+                title: "42. El victorioso vive en mí",
+                artist: "Alabanza",
+                lyrics: "El victorioso vive en mí\nEl victorioso vive en mí\nLas circunstancias no\nme mueven a mí\nEl victorioso vive en mí. (x2)\n\nYo cantaré y danzaré\nCelebraré la victoria del Señor\nNo temeré al pelear\nPues la victoria es del Señor."
+            },
+            {
+                id: 43,
+                title: "43. Salmo 150",
+                artist: "Alabanza",
+                lyrics: "Alelu – u - ya\nAlelu – u - ya\n\nEl Señor es digno de alabanza\nEl Señor es digno de loor\nEl Señor es digno / de confianza\nEl Señor es digno de mi amor.\n\nCORO\nAlelu – u - ya\nAlelu – u - ya\n\nAlábenlo a Dios en su santuario\nAlábenlo en su gloria celestial\nAlabadlo por sus hechos poderosos\nY toda su grandeza sin igual.\n\nCORO\n\nAlábenlo con toques de trompeta\nInstrumentos de viento y de cuerda\nAlábenlo con un cajón sonoro\nY todo el que respire alábelo.\n\nCORO"
+            },
+            {
+                id: 44,
+                title: "44. La Cosecha",
+                artist: "Alabanza",
+                lyrics: "Alza tus ojos y mira,\nLa cosecha está lista\nEl tiempo ha llegado,\nLa mies está madura.\n\nEsfuérzate y se valiente,\nLevántate y predica\nA todas las naciones\nQue Cristo es la vida.\n\nY será llena la tierra de su gloria\nSe cubrirá\ncomo la aguas cubren la mar (x2)\n\nNo, no hay otro nombre\nDado a los hombres,\nJesucristo es el Señor."
+            },
+            {
+                id: 45,
+                title: "45. Creo en Ti",
+                artist: "Alabanza",
+                lyrics: "Quiero levantar a ti mis manos\nmaravilloso Jesús\nmilagroso Señor.\nLlena este lugar de tu presencia\ny has descender tu poder\na los que estamos aquí.\n\nCreo en ti Jesús\ny en lo que harás en mí\nCreo en ti Jesús\ny en lo que harás en mí\nen mí, en mí.\n\nRecibe toda la gloria\nrecibe toda la honra\nprecioso hijo de Dios (x2)"
+            },
+            {
+                id: 46,
+                title: "46. Por los siglos de los siglos",
+                artist: "Alabanza",
+                lyrics: "Un día estaré\na su lado gozándome\ncantando cuán grande es El\nUn día yo veré\na su rostro brillando y\nal verlo caeré a sus pies\nGrande es, digno es,\ncantaremos con ángeles\nal digno cordero fiel.\n\nCORO:\nH: Por los siglos de los siglos\nM: yo cantaré por siempre\nporque Él es fiel\nH: y nunca dejaré\nde adorarle a Él.\n\nEn un momento yo seré\nhecho nuevo a su imagen\npor siempre yo cambiaré\nÉl dirá, “Ven a aquí,\na mi lado serás feliz\ny toda lágrima limpiaré”\nGrande es, digno es,\ncantaremos con ángeles\nal digno cordero fiel.\n\nCORO\n\nAl final escucharé\na su voz llamándome\na un lugar sin llanto y dolor.\nAl final cantaré\noh Señor escúchame\nno hay nada que deseo más.\nAyúdame a serte fiel\ncada día acordándome\nque nunca me dejarás.\n\nCORO\n\nUn día estaremos con Él\ncantando de su grandeza\ncantando de su grandeza (x2)\n\nCORO\n\nPorque Él es fiel."
             },
             {
                 id: 47,
@@ -405,10 +608,148 @@
                 lyrics: "¡Con mi Dios yo tengo la victoria,\ncon mi Dios ejércitos derribaré!\n(x2)\n\nEl adiestra mis manos\npara la batalla,\nTodo lo puedo en Cristo\nque me fortalece,\n\nÉl es escudo, la roca mía,\nÉl es la fuerza de mi salvación,\nmi alto refugio, mi fortaleza,\nÉl es, mi libertador."
             },
             {
+                id: 47,
+                title: "47. Con mi Dios",
+                artist: "Alabanza",
+                lyrics: "¡Con mi Dios yo tengo la victoria,\ncon mi Dios ejércitos derribaré!\n(x2)\n\nEl adiestra mis manos\npara la batalla,\nTodo lo puedo en Cristo\nque me fortalece,\n\nÉl es escudo, la roca mía,\nÉl es la fuerza de mi salvación,\nmi alto refugio, mi fortaleza,\nÉl es, mi libertador."
+            },
+            {
+                id: 48,
+                title: "48. Tú Habitas",
+                artist: "Alabanza",
+                lyrics: "Tú eres DIOS, Tú eres Rey,\neres grande y temible.\nTú eres Luz, el Amor,\neres CRISTO el Señor.\n\nTú habitas en las alabanzas\nde tu pueblo,\nen la hermosura de\ntu santidad.\n\nTú eres Santo, Santo, Santo.\nHijo de DIOS.\nTú eres Digno, Digno, Digno.\nAltísimo Señor."
+            },
+            {
+                id: 49,
+                title: "49. Si tuviera fe",
+                artist: "Alabanza",
+                lyrics: "// Si tuviera Fe\ncomo un grano de mostaza,\nEso lo dice el Señor //\n\n// Yo le diría a la montaña,\nMuévete, muévete. //\n\n// Y la montaña se moverá,\nse moverá, se moverá //"
+            },
+            {
+                id: 50,
+                title: "50. Celebro victorioso",
+                artist: "Alabanza",
+                lyrics: "CORO\nCelebro victorioso\nel Triunfo de Cristo\nme ha hecho más que vencedor.\nMayor es el que está en mí\nque el que está en el mundo\nMe ha hecho más que vencedor.\n\nTodo lo puedo en Cristo\nque me fortalece!!\n- Más que vencedor.\nSi Dios está conmigo\nquien contra mi!!\n- Más que vencedor.\nSoy más que vencedor\nen Cristo!!\nMás que vencedor."
+            },
+            {
+                id: 51,
+                title: "51. El es el Rey",
+                artist: "Alabanza",
+                lyrics: "El es el rey, infinito en poder\nel es el rey de los cielos.\nSeré para Él siervo fiel\npues mi vida compró con su amor.\n\nEl es el rey, lo confiesa mi ser\nÉl es el rey de los siglos.\nMi vida la rindo a sus pies\nÉl es rey sobre mi corazón.\n\nCORO:\nEl es el rey, El es el rey\nEl es el rey de mi vida\nEl es el rey, El es el rey\nReina con autoridad.\n\nSu reino eterno es\nSu trono el cielo es.\nÉl es el rey\nque viene a su pueblo a llevar."
+            },
+            {
+                id: 52,
+                title: "52. Anciano de días",
+                artist: "Alabanza",
+                lyrics: "Bendición y gloria\npoder y honra\nal Anciano de días será.\nToda nación\ny la creación\nal Anciano de días se postrará.\n\nCORO\nToda lengua confesará,\ndeclarará tu gloria\nToda rodilla se doblará,\nadorando\nTu nombre exaltado será\ny tu reino Anciano de días,\nno pasará\n\nSobre la tierra tu reinarás\nal Anciano de días cantad.\nTu gran dignidad Dios es sin igual\nal Anciano de días cantad."
+            },
+            {
+                id: 53,
+                title: "53. Señor eres fiel",
+                artist: "Alabanza",
+                lyrics: "Señor eres fiel y tu misericordia eterna,\nseñor eres fiel y tu misericordia eterna\nGente de toda, lengua y nación,\nde generación a generación.\n\nCORO\nTe adoramos hoy. Aleluya, aleluya\nTe adoramos hoy. Eres Señor. (x2)\n\nEres fiel !!!"
+            },
+            {
+                id: 54,
+                title: "54. Cuán grande es Dios",
+                artist: "Alabanza",
+                lyrics: "El esplendor de un Rey,\nvestido en Majestad\nLa Tierra alegre está\nLa Tierra alegre está\n\nCubierto está de luz,\nvenció a la oscuridad\nY tiembla a Su voz\nTiembla a Su voz\n\nCORO\nCuán grande es Dios\nCántale, cuán grande es Dios\ny todos lo verán\nCuán grande es Dios. (x2)\n\nDía a día El está\nY el tiempo está en El\nPrincipio y el fin\nPrincipio y el fin.\n\nLa Trinidad en Dios\nEl Padre, Hijo, Espíritu\nCordero y el León\nCordero y el León.\n\nCORO\n\nTu Nombre sobre todo es\nTú eres digno de alabar\nY mi ser dirá Cuán grande es Dios (x2)\n\nCORO"
+            },
+            {
+                id: 55,
+                title: "55. Tú nos creaste",
+                artist: "Alabanza",
+                lyrics: "Tú nos creaste con un propósito\npara tu nombre glorificar\ny cada día sobre la tierra\nproclamaremos tu majestad.\n\nTu nos creaste para alabarte\npara tu gloria manifestar\ny cada día sobre la tierra\nanunciaremos tu gran bondad.\n\nCORO\nQueremos darte gloria y honor\nqueremos darte la adoración\nqueremos exaltarte por siempre. (x2)\n\nA tus pies rindo todo\nlo que tengo Señor.\ny mi devoción entera\nsólo a ti te la doy."
+            },
+            {
+                id: 56,
+                title: "56. Al que me ciñe de poder",
+                artist: "Alabanza",
+                lyrics: "Al que me ciñe de poder,\nA aquel que mi victoria es,\nSólo a Él alabaré,\nSólo a Él exaltaré.\n\nCORO\nDe ti será mi alabanza,\nEn la congregación.\nCantaré, y alabaré,\nTu nombre Señor."
+            },
+            {
+                id: 57,
+                title: "57. Te pertenezco",
+                artist: "Alabanza",
+                lyrics: "Muéstrame\ntu camino hoy Señor.\nSantifícame\ndispuesto está mi corazón.\n\nQuiero ser una ofrenda para Ti\ncon mi forma de vivir\nque tu reino venga a mí.\n\nCORO\nPostrado en mi aposento\nme encontraré contigo\nen la intimidad.\nMe enseñarás\na tocar tu corazón.\n\nMi vida en tu presencia\nse ha vuelto la aventura\nque tanto soñé\nhe encontrado en ti\nla razón de mi existir.\n\nTe pertenezco Señor."
+            },
+            {
+                id: 58,
+                title: "58. Eres",
+                artist: "Alabanza",
+                lyrics: "Oh, Señor, en ti he confiado\npongo en tus manos mi espíritu.\nOh, Señor, me has revivido\ny en ti se alegra mi corazón.\n\nEres mi fuerza y mi morada\neres la voz de mi madrugada\neres mi roca y mi torre fuerte\nEres, Señor.\n\nEres amor, Dios bueno y justo\neres mi canto y mi refugio\neres hermoso y luz del mundo\nEres, Señor\n\nOh, Señor, bendito siempre\nAlfa y Omega, principio y fin.\nOh, Señor, mi ser te adora\ny en tu presencia quiero vivir.\n\nPorque eres mi fuerza...\n\nEres hermoso y luz del mundo\nEres, Señor. (x3)\n\n[ROJO]Zacarías 2:10\nCanta de júbilo y alégrate, oh hija de Sión; porque he aquí, vengo, y habitaré en medio de ti --declara el SEÑOR.[/ROJO]"
+            },
+            {
+                id: 59,
+                title: "59. Sólo a Ti sea la gloria",
+                artist: "Alabanza",
+                lyrics: "No existen más motivos, Señor\nvenimos hoy rendidos a Ti.\nLa única razón\nde nuestra adoración hoy, eres Tú.\nElevamos olor fragante\npara ti, para ti.\n\nCORO\nSólo a ti sea la gloria Señor,\nla alabanza y la adoración\ntoda rodilla se doble\nante el único rey y Dios.\nSólo a ti sea la gloria Señor,\nla alabanza y la adoración\nque toda lengua confiese\nque Tú eres el Señor."
+            },
+            {
+                id: 60,
+                title: "60. Eres Todo Poderoso",
+                artist: "Alabanza",
+                lyrics: "La única razón de mi adoración\neres Tú mi Jesús.\nMi único motivo para vivir,\neres Tú mi Señor.\n\nMi única verdad está en Ti,\neres mi luz y mi salvación.\nMi único amor eres Tú Señor,\ny por siempre te alabaré.\n\nCORO:\nEres todopoderoso,\neres grande y majestuoso.\nEres fuerte, invencible\ny no hay nadie como Tú."
+            },
+            {
+                id: 61,
+                title: "61. Bueno es alabar",
+                artist: "Alabanza",
+                lyrics: "Bueno es alabar al Señor,\ntu nombre,\nDarte gloria, honra y honor,\npor siempre,\nBueno es alabarte Jesús\ny gozarme en tu poder.\n(x2)\n\nCORO\nPorque grande eres Tú,\ngrande son tus obras,\nPorque grande eres Tú,\ngrande es tu amor,\ngrande es tu gloria.\n(x2)"
+            },
+            {
+                id: 62,
+                title: "62. Voy Caminando a Ti",
+                artist: "Alabanza",
+                lyrics: "CORO:\nVoy caminando a ti,\nvoy caminando al cielo,\nvoy caminando a ti Señor,\n[Quiero oír mi nombre.] (x2)\n\nMi Dios le dijo a Noé:\nQue construyera un Arca,\nla voy a hacer,\n[de madera de ciprés, ciprés](x2)\n\nCORO\n\nY sabes tú que Pablo\ncargó muchas cadenas,\ny cada eslabón\n[fue en nombre de Jesús, de Jesús]\n(x2)\n\nCORO\n\nHay un solo Señor,\nhay una sola fe,\nhay un solo Dios\n[y Él nos salvará, salvará] (x2)\n\nCORO"
+            },
+            {
+                id: 63,
+                title: "63. Canta Aleluya",
+                artist: "Alabanza",
+                lyrics: "H: Canta Aleluya al Señor...\nM: Canta Aleluya al Señor...\nH: Canta Aleluya al Seño-o-o-or...\nM: Canta Aleluya-a...\n\nTODOS:\nCanta Alelu-u-ya.\nCanta Alelu-u-ya-a.\nH: Canta Aleluya al Señor.\nM: Canta....Canta Aleluya al Señor.\n\nCristo es Rey y es Señor...\n\nSigue a Jesús el Buen Pastor..."
+            },
+            {
+                id: 64,
+                title: "64. Tu Fidelidad",
+                artist: "Alabanza",
+                lyrics: "Tu Fidelidad, es grande\nTu  fidelidad, incomparable es.\nNadie como Tú, Bendito Dios,\nGrande es Tu fidelidad."
+            },
+            {
+                id: 65,
+                title: "65. Señor Prepárame",
+                artist: "Alabanza",
+                lyrics: "CORO:\nSeñor prepárame\npara ser santuario\npuro y santo,\nverdadero, agradecido.\nQuiero ser un digno,\nsantuario para ti.\n\nFue el Señor\nquien por su gracia\ndio a Jesús de corazón.\nÉl me guía, por su senda\ny me fortalece con su poder.\n\nCORO"
+            },
+            {
+                id: 66,
+                title: "66. Cristo, Cristo mi Señor",
+                artist: "Alabanza",
+                lyrics: "Si la vida es canción,\nyo por ti cantaré. (2x)\nSi la vida es travesía,\nyo contigo andaré. (2x)\n\nCORO:\nCristo, Cristo mi Señor (2x)\n\nCaminando a mi lado\nsiempre Él está. (2x)\nAyudando y animando\nen mi vida Él va. (2x)\n\nCORO\n\nBajó al mundo\na darme la libertad. (2x)\nRompió el pecado\nque moraba en mí. (2x)\n\nCORO\n\nEl mundo en que vivimos\npasajero es. (2x)\nLa vida en Cristo\nnunca tiene final. (2x)\n\nCORO"
+            },
+            {
+                id: 67,
+                title: "67. Cántico Celeste",
+                artist: "Alabanza",
+                lyrics: "En tu ser un dulce canto gozarás\nde alegría cada día,\naunque pruebas y tristezas hallarás,\nen tu ser  un dulce canto gozarás.\n\nCORO:\nH: Cántico Celeste\n  en la noche tendrás\nM: Cántico celeste, cántico celeste,\n  cántico celeste tendrás\nH: En tu corazón\n  aunque en aflicción\nM: En tu corazón, en tu corazón\n  aunque estés en aflicción\nH: Fácil es cantar\n  cuando reina la paz\nM: Fácil es cantar, fácil es cantar,\n  fácil es cantar en la paz\nTodos:\nPero en el dolor es mejor cantar.\n\nYa la noche pasará con su pavor,\nde tus pruebas  ya no temas,\nHoy trabaja, ora y sirve a tu Señor,\npronto el sol alumbrará en tu corazón.\n\nCORO\n\n[ROJO]Salmos 147:1\n¡Aleluya! Porque bueno es cantar alabanzas a nuestro Dios, porque agradable y apropiada es la alabanza.[/ROJO]"
+            },
+            {
                 id: 68,
                 title: "68. Quiero Alabarte",
                 artist: "Alabanza",
                 lyrics: "CORO:\nQuiero alabarte\nmás y más aún (2x)\nBuscar tu voluntad,\ntu gracia conocer,\nquiero alabarte (2x)\n\nLas aves del cielo\ncantan para ti.\nLas bestias del campo\nreflejan tu poder.\nQuiero yo cantar.\nQuiero levantar mis manos a ti.\n\nCORO"
+            },
+            {
+                id: 79,
+                title: "79. Necesito tu Amor",
+                artist: "Alabanza",
+                lyrics: "Tengo sed de ti\nen esta oscuridad\nno alcanzo a ver\nen mis rostro tu luz\ncuando está oscuro y frío,\no mi hogar lejano está\nTú estas en mí,\npor eso solo no andaré.\n\nCORO\nY soy como un árbol\nplantado cerca a un río\nsediento por un sorbo\nde tu amor\nNo puedo enfrentar\nun día sin orar\ny canto para decir:\nNecesito tu amor."
+            },
+            {
+                id: 88,
+                title: "88. Amor, Amor",
+                artist: "Alabanza",
+                lyrics: "Amor, amor, amor, amor.\nEl evangelio es amor,\nama a tu prójimo como a ti mismo.\nAmor, amor, amor, amor.\n\nAmor, amor, amor, amor.\nPablo el Apóstol dice de amor:\ntodo lo cree, espera y soporta.\nAmor, amor, amor, amor.\n\nAmor, amor, amor, amor.\nHoy permanecen tres grandes\ncosas:\nfe, esperanza y el amor.\nY el mayor de ellos es amor."
             },
             {
                 id: 89,
@@ -433,6 +774,180 @@
                 title: "115. SALMO 15",
                 artist: "Salmo",
                 lyrics: "Salmo de David\n\n[ROJO]1 ¿Quién, Señor, puede habitar en tu santuario?\n¿Quién puede vivir en tu santo monte?[/ROJO]\n\n2 Sólo el de conducta intachable,\nque practica la justicia y\nde corazón dice la verdad; CORO\n\n3 que no calumnia con la lengua,\nque no le hace mal a su prójimo\nni le acarrea desgracias a su vecino; CORO\n\n4 que desprecia al que Dios reprueba,\npero honra al que teme al Señor;\nque cumple lo prometido aunque salga\nperjudicado; CORO\n\n5 que presta dinero sin ánimo de lucro,\ny no acepta sobornos que afecten al inocente.\nEl que así actúa no caerá jamás. CORO"
+            },
+            {
+                id: 69,
+                title: "69. Cristo, quiero caminar siempre contigo",
+                artist: "Alabanza",
+                lyrics: "Cristo,\nquiero caminar siempre contigo\ny tomarte fuerte de la mano\ny sentir tu fortaleza en mi. (x2)\n\nCORO\nPorque en ti se encuentra\ntoda fuerza de victoria\ny tu santo nombre\nme salvó y me liberó.\n\nPorque en ti mi carga es ligera..\nporque en ti mi carga es ligera.."
+            },
+            {
+                id: 70,
+                title: "70. Le Seguiré",
+                artist: "Alabanza",
+                lyrics: "Muchos dicen que no es\nposible transformar\ntu vida en un instante.\nPero yo he visto renacer\nmi vida de una vez\nJesús me ha cambiado.\n\nDios me ha hecho comprender\nque no hay mayor amor\nque dar nuestra vida.\nHe dejado atrás lo que ayer\ntenía algún valor,\nJesús vale mucho más.\n\nCORO:\nLe escucharé cuando Él me llame.\nLe seguiré por donde Él vaya.\nLe serviré donde Él me envíe.\nPues no concibo otro bien,\nque amar a mi Señor.\nRealizaré lo que Él me pida\nno negaré lo que Él demande.\nLe entregaré toda mi vida.\nPues no concibo otro bien,\npara mí, que servir a mi Señor.\n\nLa gente a mi alrededor\nse pierde más y más\nsin Dios, sin esperanza.\nCuando Jesús su vida dio por mí,\npuso en mi corazón\nel dar mi propia vida.\n\nCORO"
+            },
+            {
+                id: 71,
+                title: "71. Gálatas 2:20",
+                artist: "Alabanza",
+                lyrics: "Con Cristo estoy\njuntamente crucificado\nY ya no vivo yo\nmas vive Cristo en mí\n\nY lo que ahora\nvivo yo en la carne\nlo vivo, en la fe del Hijo de Dios.\n\nEl cual me amó y se entregó\nasimismo por mí."
+            },
+            {
+                id: 72,
+                title: "72. En mi corazón hay una Canción",
+                artist: "Alabanza",
+                lyrics: "En mi corazón hay una canción\nQue demuestra gratitud\nPara mi Rey y mi Señor\nPara aquel que me amó.\n(x2)\n\nCORO\nHermoso eres mi Señor\nHermoso eres Tú, amado mío\nEres la fuente de mi vida\nY el anhelo de mi corazón."
+            },
+            {
+                id: 73,
+                title: "73. Cuán grande es Él",
+                artist: "Alabanza",
+                lyrics: "Señor mi Dios\nal contemplar los cielos\nEl firmamento y las estrellas mil.\nAl oír tu voz\nen los potentes truenos\nY ver brillar al sol en su cenit.\n\nCORO\nMi corazón entona la canción\nCuán grande es El,\ncuán grande es El.\n(x2)\n\nAl recorrer\nlos montes y los valles\nY ver las bellas flores al pasar\nAl escuchar\nel canto de las aves\nY el murmurar el claro manantial.\n\nCORO\n\nCuando el Señor\nme llame a su presencia\nAl dulce hogar, al cielo de esplendor\nLe adoraré\ncantando la grandeza\nDe su poder y su infinito amor.\n\n[ROJO]Hebreos 2:12\n\"Hablaré de ti a mis hermanos\ny te cantaré himnos en medio de\nla congregación.\"[/ROJO]"
+            },
+            {
+                id: 74,
+                title: "74. Tú estás aquí",
+                artist: "Alabanza",
+                lyrics: "Aunque mis ojos\nno te puedan ver\nte puedo sentir\nsé que estás aquí.\n\nAunque mis manos\nno pueden tocar\ntu rostro señor\nsé que estás aquí.\n\nCORO\nMi corazón\npuede sentir tu presencia\nTú estás aquí Tú estás aquí\npuedo sentir tu majestad\nTú estás aquí Tú estás aquí\n\nMi corazón\npuede mirar tu hermosura\nTú estás aquí Tú estás aquí\npuedo sentir tu gran amor\nTú estás aquí Tú estás aquí"
+            },
+            {
+                id: 75,
+                title: "75. Desde mi interior",
+                artist: "Alabanza",
+                lyrics: "Mil veces te fallé, mas Tú fuiste fiel\nTu gracia me levantó,\nme basta Tu amor.\nDios eterno,\nTu luz por siempre brillará\nY Tu gloria, incomparable y sin final.\n\nSeñor Tu voluntad permanecerá\nEn ti me quiero perder\nen adoración.\nDios eterno,\nTu luz por siempre brillará\nY Tu gloria, incomparable y sin final.\n\nDe mi corazón te doy el control,\nConsume todo mi interior, Dios.\nJusticia y amor me abrazan Señor\nTe amo desde mi interior.\n\nDios eterno,\nTu luz por siempre brillará\nY Tu gloria, incomparable y sin final\nEl clamor de mi ser es contigo estar\nDesde mi interior mi alma clamará.\n\n[ROJO]Colosenses 3:16\nQue el mensaje de Cristo, con\ntoda su riqueza, llene sus\nvidas. Enséñense y aconséjense\nunos a otros con toda la sabiduría\nque él da. Canten salmos\ne himnos y canciones espirituales\na Dios con un corazón\nagradecido.[/ROJO]"
+            },
+            {
+                id: 76,
+                title: "76. Eres mi respirar",
+                artist: "Alabanza",
+                lyrics: "Eres mi respirar (2x)\nDios tu presencia vive en mí.\nEres mi pan señor (2x)\nDios tus palabras fluyen en mí.\n\nCORO\nY yo, te anhelo Señor\nEstoy, perdido sin ti."
+            },
+            {
+                id: 77,
+                title: "77. Mi alma anhela estar",
+                artist: "Alabanza",
+                lyrics: "Mi alma anhela estar\npostrada ante tu altar\ny siempre adorar\ntu santo nombre.\n\nTu gloria levantar,\ntu belleza contemplar\ny siempre exaltar\ntu santo nombre.\n\nCORO\nEn tu presencia\nquiero habitar,\nmi vida consagrarte,\nde corazón amarte.\n\nBajo tu sombra\nquiero morar,\nmi vida consagrarte,\nde corazón Señor...\n(amarte)"
+            },
+            {
+                id: 78,
+                title: "78. Puedo imaginarme",
+                artist: "Alabanza",
+                lyrics: "Puedo imaginarme,\nSeñor como será\nal estar junto a Ti.\nPuedo imaginarme,\nlo que allí veré\ncon tu rostro frente a mi.\n\nPuedo imaginarme.\n\nCORO\nRodeado de tu gloria\nque sentirá mi ser.\nDanzaré por ti mi Cristo\no en silencio quedaré.\nEstaré de pie en tu gloria\no me tendré que arrodillar.\nCantaré, Aleluya,\nquizás aun ni pueda hablar\nPuedo imaginarme,\nsólo imaginarme.\n\nPuedo imaginarme,\nel día que yo\nVea el reflejo,\ndel hijo de Dios\nPuedo imaginarme,\nuna eternidad\nPara siempre sólo adorar.\n\nCORO\n\nPuedo imaginarme\nsólo imaginarme."
+            },
+            {
+                id: 80,
+                title: "80. El poder de tu amor",
+                artist: "Alabanza",
+                lyrics: "Vengo a ti Señor,\ncámbiame renuévame,\npor la gracia que\nencontré en Ti.\nAhora sé que las\ndebilidades que hay en mí,\nse desvanecerán\npor el poder de tu amor.\n\nCORO\nCúbreme, con tu amor rodéame,\ntómame, cerca quiero estar.\nY al esperar\nnuevas fuerzas yo tendré\ny me levantaré como las águilas\npor el poder de tu amor.\n\nYo te quiero ver,\ncara a cara oh Señor\ny conocer así\nmás de Ti, en mí.\nPrepárame Señor\npara hacer tu voluntad\nviviendo cada día\npor el poder tu amor."
+            },
+            {
+                id: 81,
+                title: "81. Temprano yo te buscaré",
+                artist: "Alabanza",
+                lyrics: "Temprano yo te buscaré\nde madrugada yo me acercaré a ti\nmi alma te anhela y tiene sed\npara ver tu gloria y tu poder.\n\nMi socorro has sido Tú\ny en la sombra de tus alas\nyo te buscaré\nMi alma está confiada en Ti\nporque tu diestra\nme ha sostenido\noh tu diestra me ha sostenido."
+            },
+            {
+                id: 82,
+                title: "82. Torre Fuerte es el nombre",
+                artist: "Alabanza",
+                lyrics: "// Torre Fuerte\nes el nombre del Señor //\n\nA Él correrá el justo\ny levantado será."
+            },
+            {
+                id: 83,
+                title: "83. Vengo a adorarte",
+                artist: "Alabanza",
+                lyrics: "Oh Luz del mundo\nBajaste a la oscuridad\nMis ojos abriste, pude ver.\nBelleza que causa\nque mi ser te adore.\nEsperanza de vida en Ti.\n\nCORO\nVengo a adorarte\nVengo a postrarme\nVengo a decir que eres mi Dios\nEres simplemente bello\nSimplemente digno\nTan maravilloso para mí.\n\nOh Rey Eterno\ntan alto y exaltado\nGlorioso en el cielo eres Tú\nAl mundo que hiciste\nhumilde viniste\npobre te hiciste por amor.\n\nCORO\n\nNunca sabré cuanto costo\nver mi pecado en la cruz.\n(x6)\n\nCORO"
+            },
+            {
+                id: 84,
+                title: "84. Al borde de tu gran Trono",
+                artist: "Alabanza",
+                lyrics: "Al borde, de tu gran trono,\nMe postraré, hoy a Ti.\nTú reinas sobre principados,\nSentado a la diestra de Dios.\n\nExáltate, Oh gran Cordero\nTú vives hoy y vivirás.\nCorónate con mi alabanza\nTu nombre es El Vencedor."
+            },
+            {
+                id: 85,
+                title: "85. El Señor es mi Rey",
+                artist: "Alabanza",
+                lyrics: "El Señor es mi Rey mi todo\nEl Señor es mi luz mi Dios\nEl que me hace vibrar de gozo,\nEl que guía mis pasos\nY me lleva en sus brazos\nEl creador de los cielos."
+            },
+            {
+                id: 86,
+                title: "86. Cristo Rey victorioso",
+                artist: "Alabanza",
+                lyrics: "Cristo Rey victorioso,\nte adoramos bendito Señor.\nTe has coronado\nsobre todo nombre,\nCristo, Rey y Señor.\n\n[ROJO]Salmos 63:7\nPorque tú has sido mi socorro,\ny a la sombra de tus alas\ncanto gozoso.[/ROJO]"
+            },
+            {
+                id: 87,
+                title: "87. Señor, ¿quién entrará?",
+                artist: "Alabanza",
+                lyrics: "Señor, ¿quién entrará\nen tu Santuario para adorar? (x2)\n\nEl de manos limpias\ny un corazón puro\ny sin vanidades\nque sepa amar (x2)\n\nSeñor, yo quiero entrar\nen tu Santuario para adorar (x2)\n\nDame manos limpias\ny un corazón puro,\ny sin vanidades,\nenséñame a amar (x2)\n\n[ROJO]Mateo 26:30\nY después de cantar un himno, salieron hacia el monte de los\nOlivos.[/ROJO]"
+            },
+            {
+                id: 90,
+                title: "90. Renuévame",
+                artist: "Alabanza",
+                lyrics: "Renuévame, Señor Jesús,\nya no quiero ser igual.\nRenuévame, Señor Jesús,\npon en mí tu corazón.\n\nPorque todo lo que hay\ndentro de mí ,\nnecesita ser cambiado Señor,\nporque todo lo que hay\ndentro de mi corazón.\nNecesita más de ti...\nNecesita más de ti...(2x)"
+            },
+            {
+                id: 91,
+                title: "91. En Ti confía mi corazón",
+                artist: "Alabanza",
+                lyrics: "En Ti confía mi corazón\nEn ti reposa mi alma\nMi ser, descansa en Ti\nPuedo ser feliz.\n(x2)\n\nCORO:\nPorque sé que estás obrando\nTu perfecta voluntad\nEn mi vida estás obrando\nTu perfecta voluntad."
+            },
+            {
+                id: 92,
+                title: "92. Jesucristo conmigo va",
+                artist: "Alabanza",
+                lyrics: "Jesucristo conmigo va (2x)\nEn mi viaje de peregrino\nJesucristo conmigo va.\n\nEn mis pruebas, conmigo va.\n\nCristo me ama, conmigo va."
+            },
+            {
+                id: 93,
+                title: "93. Que seas mi universo",
+                artist: "Alabanza",
+                lyrics: "Que seas mi universo\nNo quiero darte sólo un rato\nde mi tiempo\nNo quiero separarte un día\nsolamente.\nQue seas mi universo\nNo quiero darte mis palabras\ncomo gotas\nQuiero un diluvio de alabanzas\nen mi boca.\n\nCORO\n//Que seas mi universo\nQue seas todo lo que siento\ny lo que pienso.\nQue seas el primer aliento\nen la mañana\ny la luz en mi ventana.\n\nQue seas mi universo\nQue llenes cada uno de\nmis pensamientos\nQue tu presencia y tu poder\nsean mi alimento\nOh Jesús es mi deseo//\n\nQue seas mi universo\nNo quiero darte sólo parte\nde mis años\nTe quiero dueño de mi tiempo\ny de mi espacio.\nQue seas mi universo\nNo quiero hacer mi voluntad\nquiero agradarte\ny cada sueño que hay en mí\nquiero entregarte."
+            },
+            {
+                id: 94,
+                title: "94. Santo Eres Tú",
+                artist: "Alabanza",
+                lyrics: "Santo eres Tú\nY digno de adoración\nMi corazón ofrezco a Ti\n(Santo eres Tú)\n\nSanto eres, Santo eres\nSanto eres Tú."
+            },
+            {
+                id: 95,
+                title: "95. Revelación",
+                artist: "Alabanza",
+                lyrics: "Digno es el Cordero Santo\nSanto Santo es Él\nLevantamos nuestra alabanza\nAl que en el trono está.\n\nCORO\nSanto, santo, santo\nDios Todopoderoso\nQuien fue, quien es y quien vendrá\nLa creación le canta\ny damos gloria a Él\nTú eres digno\npor siempre y siempre.\n\n//Levantamos nuestra alabanza\nAl que en el trono está.//"
+            },
+            {
+                id: 96,
+                title: "96. Por un destello de tu gloria",
+                artist: "Alabanza",
+                lyrics: "Por un momento en tu presencia\nPor un instante de tu amor\nPor un destello de tu gloria\nPor un minuto nada más.\n\nTodo daría no importaría\nlo que tenga que pasar,\nlo que tenga que esperar.\n\nCORO\nTengo hambre de Ti\nde tu presencia, de tu fragancia,\nde tu poder.\nHambre que duele,\nque debilita,\nque desespera por Ti.\n\n[ROJO]Santiago 5:13\n¿Alguno de ustedes está pasando\npor dificultades? Que ore.\n¿Alguno está feliz? Que cante\nalabanzas.[/ROJO]"
+            },
+            {
+                id: 97,
+                title: "97. Libres en Jesucristo",
+                artist: "Alabanza",
+                lyrics: "Libres Jesucristo nos hizo libres\n(x4)\n\nY si cantamos, cantamos para El\nY si lloramos lo hacemos para El\nY si postrados venimos ante El\nEs porque Jesucristo nos hizo libres."
+            },
+            {
+                id: 98,
+                title: "98. Recuérdenme",
+                artist: "Alabanza",
+                lyrics: "Cuando Jesús reunió a los doce\nA compartir la cena pascual\nRecuerda\n_______ Partiendo el pan\nRecuerda\n_______ y vino tomó.\nLes traigo una nueva promesa\nYo moriré por su libertad.\nRecuerda\n_______ Hazlo por mí\nRecuerda\n_______ Recuérdenme.\n\nCORO:\nRecuérdenme\n_______ El pan es por mi cuerpo\nRecuérdenme\n_______ El vino es por mi sangre.\nAyúdame a no olvidar\nque Jesús murió en mi lugar.\n\nRecuérdenme\n_______ El pecado ya no me acusa\nRecuérdenme\n_______ La esperanza me liberó.\nHasta que estemos frente a Él.\nRecuérdenme\n_______ Recuérdenme\n\nAl ver Jesús la mujer adúltera\n¿Hay que apedrearla?\nalguien preguntó.\nRecuerda\n_______ Silencio guardó\nRecuerda\n_______ en el suelo escribió.\nEl que no tenga ningún pecado,\nPrimera piedra arrojará.\nRecuerda\n_______ Nadie se quedó\nRecuerda\n_______ Ve y no peques más.\n\nCORO\n\nCuando Jesús habló con los once\nDespués de a la muerte vencer\nRecuerda\n_______ En cada nación\nRecuerda\n_______ hablen de mí.\nHagan discípulos en todo el mundo\nBautizando y enseñándoles.\nRecuerda\n_______ Hasta el final\nRecuerda\n_______ contigo estoy.\n\n[ROJO]1 Corintios 14:15\n¿Qué, pues, debo hacer?\nDebo orar con el espíritu, pero también con el entendimiento;\ndebo cantar con el espíritu, pero también con el entendimiento.[/ROJO]"
+            },
+            {
+                id: 99,
+                title: "99. Gloria Aleluya",
+                artist: "Alabanza",
+                lyrics: "Gloria aleluya, Padre del cielo\nadorarte quiero sólo a Ti.\nDios majestuoso del universo\nadorarte quiero sólo a Ti.\n\nCORO 1\nQue tu nombre\nsea exaltado eternamente\nTú eres el mismo hoy y siempre\na Ti doy la gloria sólo a Ti.\n\nGloria aleluya, Padre del cielo\nadorarte quiero sólo a Ti.\n\nCORO 1\n\nCORO 2\nPoderoso\ntuyos son los cielos y la tierra\ntuyos son los mares, las estrellas\na Ti doy la gloria sólo a Ti.\n\nGloria gloria aleluya (x3)\n\nGloria aleluya, Padre del cielo\nadorarte quiero sólo a Ti.\n(//Gloria gloria aleluya//)\nDios majestuoso del universo\nadorarte quiero sólo a Ti.\n(//Gloria gloria aleluya//)\n\nCORO 1\n(//Gloria gloria aleluya//)\n\nCORO 2\nGloria gloria aleluya..."
+            },
+            {
+                id: 100,
+                title: "100. Mi Padre me ama tanto",
+                artist: "Alabanza",
+                lyrics: "Mi Padre me ama tanto que\nsu hijo dio por mí\nPor siempre las gracias le daré\nMe ha dado su espíritu y verdad\nbendito mi Señor\nA su lado nada temeré,\ny cantaré.\n\nCORO\nMi Padre me ama tanto\n(Él me ama tanto)\nSu amor es eterno y santo\n(Eterno y santo)\ntan grande que no puedo entender\n(no puedo entender...)\nMe viste de ropa fina\nme anhela y me dio su vida\ngloria, aleluya, Padre fiel.\n\nMi Padre me ama tanto que\nsoy su heredero\nMe ha dado su nombre y su poder\nMe viste de gloria y de bondad,\nbendito mi Señor\nMi Dios por siempre salvará\ny cantaré.\n\nCORO\n\nSu amor nunca cambia\nnunca cambia\nsu amor es benigno y tierno\nque todo lo puede y es eterno\ngloria, Amén\n\nCORO"
             }
         ];
 
